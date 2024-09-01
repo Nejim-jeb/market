@@ -137,8 +137,10 @@ class _MainScreenState extends State<MainScreen> {
                 },
                 child: Scaffold(
                   key: _scaffoldKey,
-                  drawer: const Drawer(
-                    child: MenuWidget(),
+                  drawer: Drawer(
+                    child: MenuWidget(
+                      scaffoldKey: _scaffoldKey,
+                    ),
                   ),
                   floatingActionButton: !ResponsiveHelper.isDesktop(context)
                       ? Padding(

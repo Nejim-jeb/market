@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/common/enums/footer_type_enum.dart';
 import 'package:flutter_grocery/common/models/config_model.dart';
@@ -87,6 +88,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController scrollController = ScrollController();
+  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
   void initState() {
@@ -95,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const iconColor = Colors.white;
     return Consumer<SplashProvider>(builder: (context, splashProvider, child) {
       return RefreshIndicator(
         onRefresh: () async {
@@ -102,6 +105,40 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: Scaffold(
+          bottomNavigationBar: CurvedNavigationBar(
+            key: _bottomNavigationKey,
+            backgroundColor: Colors.transparent,
+            buttonBackgroundColor: Theme.of(context).primaryColor,
+            color: Theme.of(context).primaryColor,
+            index: 0,
+            items: const <Widget>[
+              Icon(
+                Icons.add,
+                size: 30,
+                color: iconColor,
+              ),
+              Icon(
+                Icons.list,
+                size: 30,
+                color: iconColor,
+              ),
+              Icon(
+                Icons.compare_arrows,
+                size: 30,
+                color: iconColor,
+              ),
+              Icon(
+                Icons.call_split,
+                size: 30,
+                color: iconColor,
+              ),
+              Icon(
+                Icons.perm_identity,
+                size: 30,
+                color: iconColor,
+              ),
+            ],
+          ),
           appBar: ResponsiveHelper.isDesktop(context)
               ? const PreferredSize(
                   preferredSize: Size.fromHeight(120), child: WebAppBarWidget())

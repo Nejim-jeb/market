@@ -11,7 +11,6 @@ import 'package:flutter_grocery/features/menu/screens/main_screen.dart';
 import 'package:flutter_grocery/features/menu/widgets/custom_drawer_widget.dart';
 import 'package:flutter_grocery/features/menu/widgets/menu_list_web_widget.dart';
 import 'package:flutter_grocery/features/menu/widgets/sign_out_dialog_widget.dart';
-import 'package:flutter_grocery/features/notification/screens/notification_screen.dart';
 import 'package:flutter_grocery/features/profile/providers/profile_provider.dart';
 import 'package:flutter_grocery/features/profile/screens/profile_screen.dart';
 import 'package:flutter_grocery/features/splash/providers/splash_provider.dart';
@@ -23,6 +22,8 @@ import 'package:flutter_grocery/utill/dimensions.dart';
 import 'package:flutter_grocery/utill/images.dart';
 import 'package:flutter_grocery/utill/styles.dart';
 import 'package:provider/provider.dart';
+
+const double _drawerOpacity = 1;
 
 class MenuScreen extends StatefulWidget {
   final bool isReload;
@@ -69,8 +70,12 @@ class _MenuScreenState extends State<MenuScreen> {
 
 class MenuWidget extends StatelessWidget {
   final CustomDrawerController? drawerController;
-
-  const MenuWidget({Key? key, this.drawerController}) : super(key: key);
+  final GlobalKey<ScaffoldState>? scaffoldKey;
+  const MenuWidget({
+    Key? key,
+    this.drawerController,
+    this.scaffoldKey,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -95,8 +100,8 @@ class MenuWidget extends StatelessWidget {
           ColoredBox(
         color: Provider.of<ThemeProvider>(context).darkTheme ||
                 ResponsiveHelper.isDesktop(context)
-            ? Theme.of(context).hintColor.withOpacity(0.1)
-            : Theme.of(context).primaryColor,
+            ? Theme.of(context).canvasColor
+            : Colors.white,
         child: SafeArea(
           child: ResponsiveHelper.isDesktop(context)
               ? MenuListWebWidget(isLoggedIn: isLoggedIn)
@@ -106,79 +111,82 @@ class MenuWidget extends StatelessWidget {
                     child: Consumer<SplashProvider>(
                       builder: (context, splash, child) {
                         return Column(children: [
-                          !ResponsiveHelper.isDesktop(context)
-                              ? Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: IconButton(
-                                    icon: Icon(Icons.close,
-                                        color:
-                                            Provider.of<ThemeProvider>(context)
-                                                    .darkTheme
-                                                ? Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge
-                                                    ?.color
-                                                    ?.withOpacity(0.6)
-                                                : ResponsiveHelper.isDesktop(
-                                                        context)
-                                                    ? Theme.of(context)
-                                                        .canvasColor
-                                                    : Theme.of(context)
-                                                        .canvasColor),
-                                    onPressed: () => drawerController!.toggle(),
-                                  ),
-                                )
-                              : const SizedBox(),
                           Consumer<ProfileProvider>(
                             builder: (context, profileProvider, child) => Row(
                               children: [
                                 Expanded(
-                                  child: ListTile(
-                                    onTap: () {
-                                      Navigator.of(context).pushNamed(
-                                          RouteHelper.profile,
-                                          arguments: const ProfileScreen());
-                                    },
-                                    leading: ClipOval(
-                                      child: isLoggedIn
-                                          ? splashProvider.baseUrls != null
-                                              ? CustomImageWidget(
-                                                  placeholder: Images.profile,
-                                                  image:
-                                                      '${splashProvider.baseUrls?.customerImageUrl}/${profileProvider.userInfoModel?.image}',
-                                                  height: 50,
-                                                  width: 50,
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : const SizedBox()
-                                          : Image.asset(Images.profile,
-                                              height: 50,
-                                              width: 50,
-                                              fit: BoxFit.cover),
-                                    ),
-                                    title: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          isLoggedIn
-                                              ? profileProvider.userInfoModel !=
-                                                      null
-                                                  ? Text(
-                                                      '${profileProvider.userInfoModel!.fName ?? ''} ${profileProvider.userInfoModel!.lName ?? ''}',
-                                                      style: poppinsRegular
-                                                          .copyWith(
-                                                        color: Provider.of<
-                                                                        ThemeProvider>(
-                                                                    context)
-                                                                .darkTheme
-                                                            ? Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .bodyLarge
-                                                                ?.color
-                                                                ?.withOpacity(
-                                                                    0.6)
-                                                            : ResponsiveHelper
+                                  child: ColoredBox(
+                                    color: Provider.of<ThemeProvider>(context)
+                                            .darkTheme
+                                        ? Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .color!
+                                            .withOpacity(_drawerOpacity)
+                                        : ResponsiveHelper.isDesktop(context)
+                                            ? Theme.of(context).primaryColor
+                                            : Theme.of(context).primaryColor,
+                                    child: ListTile(
+                                      onTap: () {
+                                        Navigator.of(context).pushNamed(
+                                            RouteHelper.profile,
+                                            arguments: const ProfileScreen());
+                                      },
+                                      leading: ClipOval(
+                                        child: isLoggedIn
+                                            ? splashProvider.baseUrls != null
+                                                ? CustomImageWidget(
+                                                    placeholder: Images.profile,
+                                                    image:
+                                                        '${splashProvider.baseUrls?.customerImageUrl}/${profileProvider.userInfoModel?.image}',
+                                                    height: 50,
+                                                    width: 50,
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : const SizedBox()
+                                            : Image.asset(Images.profile,
+                                                height: 50,
+                                                width: 50,
+                                                fit: BoxFit.cover),
+                                      ),
+                                      title: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            isLoggedIn
+                                                ? profileProvider
+                                                            .userInfoModel !=
+                                                        null
+                                                    ? Text(
+                                                        '${profileProvider.userInfoModel!.fName ?? ''} ${profileProvider.userInfoModel!.lName ?? ''}',
+                                                        style: poppinsRegular
+                                                            .copyWith(
+                                                          color: Provider.of<
+                                                                          ThemeProvider>(
+                                                                      context)
+                                                                  .darkTheme
+                                                              ? Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .bodyLarge
+                                                                  ?.color
+                                                                  ?.withOpacity(
+                                                                      _drawerOpacity)
+                                                              : ResponsiveHelper.isDesktop(
+                                                                      context)
+                                                                  ? ColorResources
+                                                                      .getDarkColor(
+                                                                          context)
+                                                                  : Theme.of(
+                                                                          context)
+                                                                      .canvasColor,
+                                                        ),
+                                                      )
+                                                    : Container(
+                                                        height: 10,
+                                                        width: 150,
+                                                        color:
+                                                            ResponsiveHelper
                                                                     .isDesktop(
                                                                         context)
                                                                 ? ColorResources
@@ -186,14 +194,23 @@ class MenuWidget extends StatelessWidget {
                                                                         context)
                                                                 : Theme.of(
                                                                         context)
-                                                                    .canvasColor,
-                                                      ),
-                                                    )
-                                                  : Container(
-                                                      height: 10,
-                                                      width: 150,
-                                                      color:
-                                                          ResponsiveHelper
+                                                                    .canvasColor)
+                                                : Text(
+                                                    getTranslated(
+                                                        'guest', context),
+                                                    style:
+                                                        poppinsRegular.copyWith(
+                                                      color: Provider.of<
+                                                                      ThemeProvider>(
+                                                                  context)
+                                                              .darkTheme
+                                                          ? Theme.of(context)
+                                                              .textTheme
+                                                              .bodyLarge
+                                                              ?.color
+                                                              ?.withOpacity(
+                                                                  _drawerOpacity)
+                                                          : ResponsiveHelper
                                                                   .isDesktop(
                                                                       context)
                                                               ? ColorResources
@@ -201,10 +218,20 @@ class MenuWidget extends StatelessWidget {
                                                                       context)
                                                               : Theme.of(
                                                                       context)
-                                                                  .canvasColor)
-                                              : Text(
-                                                  getTranslated(
-                                                      'guest', context),
+                                                                  .canvasColor,
+                                                    ),
+                                                  ),
+                                            if (isLoggedIn)
+                                              const SizedBox(
+                                                  height: Dimensions
+                                                      .paddingSizeSmall),
+                                            if (isLoggedIn &&
+                                                profileProvider.userInfoModel !=
+                                                    null)
+                                              Text(
+                                                  profileProvider.userInfoModel!
+                                                          .phone ??
+                                                      '',
                                                   style:
                                                       poppinsRegular.copyWith(
                                                     color: Provider.of<
@@ -215,7 +242,8 @@ class MenuWidget extends StatelessWidget {
                                                             .textTheme
                                                             .bodyLarge
                                                             ?.color
-                                                            ?.withOpacity(0.6)
+                                                            ?.withOpacity(
+                                                                _drawerOpacity)
                                                         : ResponsiveHelper
                                                                 .isDesktop(
                                                                     context)
@@ -224,64 +252,34 @@ class MenuWidget extends StatelessWidget {
                                                                     context)
                                                             : Theme.of(context)
                                                                 .canvasColor,
-                                                  ),
-                                                ),
-                                          if (isLoggedIn)
-                                            const SizedBox(
-                                                height: Dimensions
-                                                    .paddingSizeSmall),
-                                          if (isLoggedIn &&
-                                              profileProvider.userInfoModel !=
-                                                  null)
-                                            Text(
-                                                profileProvider
-                                                        .userInfoModel!.phone ??
-                                                    '',
-                                                style: poppinsRegular.copyWith(
-                                                  color: Provider.of<
-                                                                  ThemeProvider>(
-                                                              context)
-                                                          .darkTheme
-                                                      ? Theme.of(context)
-                                                          .textTheme
-                                                          .bodyLarge
-                                                          ?.color
-                                                          ?.withOpacity(0.6)
-                                                      : ResponsiveHelper
-                                                              .isDesktop(
-                                                                  context)
-                                                          ? ColorResources
-                                                              .getDarkColor(
-                                                                  context)
-                                                          : Theme.of(context)
-                                                              .canvasColor,
-                                                )),
-                                        ]),
+                                                  )),
+                                          ]),
+                                    ),
                                   ),
                                 ),
-                                IconButton(
-                                  icon: Icon(Icons.notifications,
-                                      color: Provider.of<ThemeProvider>(context)
-                                              .darkTheme
-                                          ? Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge
-                                              ?.color
-                                              ?.withOpacity(0.6)
-                                          : ResponsiveHelper.isDesktop(context)
-                                              ? ColorResources.getDarkColor(
-                                                  context)
-                                              : Theme.of(context).canvasColor),
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, RouteHelper.notification,
-                                        arguments: const NotificationScreen());
-                                  },
-                                ),
+                                //   IconButton(
+                                //     icon: Icon(Icons.notifications,
+                                //         color: Provider.of<ThemeProvider>(context)
+                                //                 .darkTheme
+                                //             ? Theme.of(context)
+                                //                 .textTheme
+                                //                 .bodyLarge
+                                //                 ?.color
+                                //                 ?.withOpacity(_drawerOpacity)
+                                //             : ResponsiveHelper.isDesktop(context)
+                                //                 ? ColorResources.getDarkColor(
+                                //                     context)
+                                //                 : Theme.of(context).canvasColor),
+                                //     onPressed: () {
+                                //       Navigator.pushNamed(
+                                //           context, RouteHelper.notification,
+                                //           arguments: const NotificationScreen());
+                                //     },
+                                //   ),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 50),
+                          // const SizedBox(height: 50),
                           if (!ResponsiveHelper.isDesktop(context))
                             Column(
                                 children: screenList
@@ -301,11 +299,16 @@ class MenuWidget extends StatelessWidget {
                                               Colors.black.withAlpha(30),
                                           leading: CustomAssetImageWidget(
                                             model.icon,
-                                            color: ResponsiveHelper
-                                                    .isDesktop(context)
+                                            color: ResponsiveHelper.isDesktop(
+                                                    context)
                                                 ? ColorResources.getDarkColor(
                                                     context)
-                                                : Colors.white,
+                                                : Provider.of<ThemeProvider>(
+                                                            context)
+                                                        .darkTheme
+                                                    ? Colors.white
+                                                    : Theme.of(context)
+                                                        .primaryColor,
                                             width: 25,
                                             height: 25,
                                           ),
@@ -323,7 +326,8 @@ class MenuWidget extends StatelessWidget {
                                                             .textTheme
                                                             .bodyLarge
                                                             ?.color
-                                                            ?.withOpacity(0.6)
+                                                            ?.withOpacity(
+                                                                _drawerOpacity)
                                                         : ResponsiveHelper
                                                                 .isDesktop(
                                                                     context)
@@ -331,7 +335,7 @@ class MenuWidget extends StatelessWidget {
                                                                 .getDarkColor(
                                                                     context)
                                                             : Theme.of(context)
-                                                                .canvasColor,
+                                                                .hintColor,
                                               )),
                                         ))
                                     .toList()),
@@ -368,7 +372,7 @@ class MenuWidget extends StatelessWidget {
                                         .textTheme
                                         .bodyLarge
                                         ?.color
-                                        ?.withOpacity(0.6)
+                                        ?.withOpacity(_drawerOpacity)
                                     : ResponsiveHelper.isDesktop(context)
                                         ? ColorResources.getDarkColor(context)
                                         : Theme.of(context).canvasColor,

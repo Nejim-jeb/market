@@ -17,6 +17,7 @@ class SplashProvider extends ChangeNotifier {
   ConfigModel? _configModel;
   BaseUrls? _baseUrls;
   int _pageIndex = 0;
+  int _screenCategoryIndex = 0;
   bool _fromSetting = false;
   bool _firstTimeConnectionCheck = true;
   bool _cookiesShow = true;
@@ -25,6 +26,7 @@ class SplashProvider extends ChangeNotifier {
   ConfigModel? get configModel => _configModel;
   BaseUrls? get baseUrls => _baseUrls;
   int get pageIndex => _pageIndex;
+  int get screenCategoryIndex => _screenCategoryIndex;
   bool get fromSetting => _fromSetting;
   bool get firstTimeConnectionCheck => _firstTimeConnectionCheck;
   bool get cookiesShow => _cookiesShow;
@@ -71,6 +73,11 @@ class SplashProvider extends ChangeNotifier {
 
   void setPageIndex(int index) {
     _pageIndex = index;
+    notifyListeners();
+  }
+
+  void setScreensCategoryIndex(int index) {
+    _screenCategoryIndex = index;
     notifyListeners();
   }
 

@@ -1,28 +1,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/common/enums/html_type_enum.dart';
 import 'package:flutter_grocery/common/providers/cart_provider.dart';
 import 'package:flutter_grocery/common/providers/theme_provider.dart';
 import 'package:flutter_grocery/common/widgets/custom_pop_scope_widget.dart';
 import 'package:flutter_grocery/common/widgets/third_party_chat_widget.dart';
 import 'package:flutter_grocery/features/address/providers/location_provider.dart';
-import 'package:flutter_grocery/features/address/screens/address_list_screen.dart';
 import 'package:flutter_grocery/features/cart/screens/cart_screen.dart';
-import 'package:flutter_grocery/features/category/screens/all_categories_screen.dart';
-import 'package:flutter_grocery/features/chat/screens/chat_screen.dart';
-import 'package:flutter_grocery/features/coupon/screens/coupon_screen.dart';
 import 'package:flutter_grocery/features/home/screens/home_screens.dart';
-import 'package:flutter_grocery/features/html/screens/html_viewer_screen.dart';
 import 'package:flutter_grocery/features/menu/domain/models/custom_drawer_controller_model.dart';
 import 'package:flutter_grocery/features/menu/domain/models/main_screen_model.dart';
 import 'package:flutter_grocery/features/menu/screens/menu_screen.dart';
-import 'package:flutter_grocery/features/menu/screens/setting_screen.dart';
+import 'package:flutter_grocery/features/notification/screens/notification_screen.dart';
 import 'package:flutter_grocery/features/order/screens/order_list_screen.dart';
-import 'package:flutter_grocery/features/order/screens/order_search_screen.dart';
 import 'package:flutter_grocery/features/profile/providers/profile_provider.dart';
 import 'package:flutter_grocery/features/refer_and_earn/screens/refer_and_earn_screen.dart';
 import 'package:flutter_grocery/features/splash/providers/splash_provider.dart';
-import 'package:flutter_grocery/features/wallet_and_loyalty/screens/loyalty_screen.dart';
 import 'package:flutter_grocery/features/wallet_and_loyalty/screens/wallet_screen.dart';
 import 'package:flutter_grocery/features/wishlist/screens/wishlist_screen.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
@@ -35,57 +27,87 @@ import 'package:flutter_grocery/utill/images.dart';
 import 'package:flutter_grocery/utill/styles.dart';
 import 'package:provider/provider.dart';
 
-List<MainScreenModel> screenList = [
-  MainScreenModel(const HomeScreen(), 'home', Images.home),
-  MainScreenModel(const AllCategoriesScreen(), 'all_categories', Images.list),
-  MainScreenModel(const CartScreen(), 'shopping_bag', Images.orderBag),
-  MainScreenModel(const WishListScreen(), 'favourite', Images.favouriteIcon),
-  MainScreenModel(const OrderListScreen(), 'my_order', Images.orderList),
-  MainScreenModel(
-      const OrderSearchScreen(), 'track_order', Images.orderDetails),
-  MainScreenModel(const AddressListScreen(), 'address', Images.location),
-  MainScreenModel(const CouponScreen(), 'coupon', Images.coupon),
-  MainScreenModel(
-      const ChatScreen(
-        orderModel: null,
-      ),
-      'live_chat',
-      Images.chat),
-  MainScreenModel(const SettingsScreen(), 'settings', Images.settings),
-  if (Provider.of<SplashProvider>(Get.context!, listen: false)
-      .configModel!
-      .walletStatus!)
-    MainScreenModel(const WalletScreen(), 'wallet', Images.wallet),
-  if (Provider.of<SplashProvider>(Get.context!, listen: false)
-      .configModel!
-      .loyaltyPointStatus!)
-    MainScreenModel(const LoyaltyScreen(), 'loyalty_point', Images.loyaltyIcon),
-  MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.termsAndCondition),
-      'terms_and_condition', Images.termsAndConditions),
-  MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.privacyPolicy),
-      'privacy_policy', Images.privacyPolicy),
-  MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.aboutUs),
-      'about_us', Images.aboutUs),
-  if (Provider.of<SplashProvider>(Get.context!, listen: false)
-      .configModel!
-      .returnPolicyStatus!)
-    MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.returnPolicy),
-        'return_policy', Images.returnPolicy),
-  if (Provider.of<SplashProvider>(Get.context!, listen: false)
-      .configModel!
-      .refundPolicyStatus!)
-    MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.refundPolicy),
-        'refund_policy', Images.refundPolicy),
-  if (Provider.of<SplashProvider>(Get.context!, listen: false)
-      .configModel!
-      .cancellationPolicyStatus!)
-    MainScreenModel(
-        const HtmlViewerScreen(htmlType: HtmlType.cancellationPolicy),
-        'cancellation_policy',
-        Images.cancellationPolicy),
-  MainScreenModel(
-      const HtmlViewerScreen(htmlType: HtmlType.faq), 'faq', Images.faq),
+List<MenuScreensSection> menuSections = [
+  MenuScreensSection(
+    title: 'Home',
+    screens: [
+      MainScreenModel(const HomeScreen(), 'home', Images.home),
+      MainScreenModel(
+          const NotificationScreen(), 'notifications', Images.orderList),
+      MainScreenModel(const OrderListScreen(), 'my_order', Images.orderList),
+      if (Provider.of<SplashProvider>(Get.context!, listen: false)
+          .configModel!
+          .walletStatus!)
+        MainScreenModel(const WalletScreen(), 'wallet', Images.wallet),
+      MainScreenModel(
+          const WishListScreen(), 'favourite', Images.favouriteIcon),
+    ],
+  ),
+  MenuScreensSection(
+    title: 'Operations',
+    screens: [
+      MainScreenModel(const CartScreen(), 'shopping_bag', Images.orderBag),
+    ],
+  ),
+  MenuScreensSection(
+    title: 'Help & Support',
+    screens: [
+      MainScreenModel(const CartScreen(), 'shopping_bag', Images.orderBag),
+    ],
+  ),
 ];
+
+// List<MainScreenModel> screenList = [
+//   MainScreenModel(const HomeScreen(), 'home', Images.home),
+//   MainScreenModel(const AllCategoriesScreen(), 'all_categories', Images.list),
+//   MainScreenModel(const CartScreen(), 'shopping_bag', Images.orderBag),
+//   MainScreenModel(const WishListScreen(), 'favourite', Images.favouriteIcon),
+//   MainScreenModel(const OrderListScreen(), 'my_order', Images.orderList),
+//   MainScreenModel(
+//       const OrderSearchScreen(), 'track_order', Images.orderDetails),
+//   MainScreenModel(const AddressListScreen(), 'address', Images.location),
+//   MainScreenModel(const CouponScreen(), 'coupon', Images.coupon),
+//   MainScreenModel(
+//       const ChatScreen(
+//         orderModel: null,
+//       ),
+//       'live_chat',
+//       Images.chat),
+//   MainScreenModel(const SettingsScreen(), 'settings', Images.settings),
+//   if (Provider.of<SplashProvider>(Get.context!, listen: false)
+//       .configModel!
+//       .walletStatus!)
+//     MainScreenModel(const WalletScreen(), 'wallet', Images.wallet),
+//   if (Provider.of<SplashProvider>(Get.context!, listen: false)
+//       .configModel!
+//       .loyaltyPointStatus!)
+//     MainScreenModel(const LoyaltyScreen(), 'loyalty_point', Images.loyaltyIcon),
+//   MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.termsAndCondition),
+//       'terms_and_condition', Images.termsAndConditions),
+//   MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.privacyPolicy),
+//       'privacy_policy', Images.privacyPolicy),
+//   MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.aboutUs),
+//       'about_us', Images.aboutUs),
+//   if (Provider.of<SplashProvider>(Get.context!, listen: false)
+//       .configModel!
+//       .returnPolicyStatus!)
+//     MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.returnPolicy),
+//         'return_policy', Images.returnPolicy),
+//   if (Provider.of<SplashProvider>(Get.context!, listen: false)
+//       .configModel!
+//       .refundPolicyStatus!)
+//     MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.refundPolicy),
+//         'refund_policy', Images.refundPolicy),
+//   if (Provider.of<SplashProvider>(Get.context!, listen: false)
+//       .configModel!
+//       .cancellationPolicyStatus!)
+//     MainScreenModel(
+//         const HtmlViewerScreen(htmlType: HtmlType.cancellationPolicy),
+//         'cancellation_policy',
+//         Images.cancellationPolicy),
+//   MainScreenModel(
+//       const HtmlViewerScreen(htmlType: HtmlType.faq), 'faq', Images.faq),
+// ];
 
 class MainScreen extends StatefulWidget {
   final bool isReload;
@@ -120,20 +142,20 @@ class _MainScreenState extends State<MainScreen> {
               builder: (context, profileProvider, child) {
             final referMenu = MainScreenModel(const ReferAndEarnScreen(),
                 'referAndEarn', Images.referralIcon);
-            if ((splash.configModel?.referEarnStatus ?? false) &&
-                profileProvider.userInfoModel?.referCode != null &&
-                screenList[9].title != 'referAndEarn') {
-              screenList.removeWhere((menu) => menu.screen == referMenu.screen);
-              screenList.insert(9, referMenu);
-            }
+            // if ((splash.configModel?.referEarnStatus ?? false) &&
+            //     profileProvider.userInfoModel?.referCode != null &&
+            //     screenList[9].title != 'referAndEarn') {
+            //   screenList.removeWhere((menu) => menu.screen == referMenu.screen);
+            //   screenList.insert(9, referMenu);
+            // }
 
             return Consumer<LocationProvider>(
               builder: (context, locationProvider, child) => InkWell(
                 onTap: () {
-                  if (!ResponsiveHelper.isDesktop(context) &&
-                      widget.drawerController.isOpen()) {
-                    widget.drawerController.toggle();
-                  }
+                  // if (!ResponsiveHelper.isDesktop(context) &&
+                  //     widget.drawerController.isOpen()) {
+                  //   widget.drawerController.toggle();
+                  // }
                 },
                 child: Scaffold(
                   key: _scaffoldKey,
@@ -179,7 +201,9 @@ class _MainScreenState extends State<MainScreen> {
                                 ])
                               : Text(
                                   getTranslated(
-                                      screenList[splash.pageIndex].title,
+                                      menuSections[splash.screenCategoryIndex]
+                                          .screens[splash.pageIndex]
+                                          .title,
                                       context),
                                   style: poppinsMedium.copyWith(
                                       fontSize: Dimensions.fontSizeLarge,
@@ -244,7 +268,9 @@ class _MainScreenState extends State<MainScreen> {
                                     ]
                                   : null,
                         ),
-                  body: screenList[splash.pageIndex].screen,
+                  body: menuSections[splash.screenCategoryIndex]
+                      .screens[splash.pageIndex]
+                      .screen,
                 ),
               ),
             );

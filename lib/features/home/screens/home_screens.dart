@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onRefresh: () async {
           await HomeScreen.loadData(true, context);
         },
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).canvasColor,
         child: Scaffold(
           bottomNavigationBar: CurvedNavigationBar(
             key: _bottomNavigationKey,

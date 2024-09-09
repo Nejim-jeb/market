@@ -282,61 +282,93 @@ class MenuWidget extends StatelessWidget {
                           // const SizedBox(height: 50),
                           if (!ResponsiveHelper.isDesktop(context))
                             Column(
-                                children: screenList
-                                    .map((model) => ListTile(
-                                          onTap: () {
-                                            if (!ResponsiveHelper.isDesktop(
-                                                context)) {
-                                              splash.setPageIndex(
-                                                  screenList.indexOf(model));
-                                            }
-                                            Navigator.of(context).pop();
-                                            // drawerController!.toggle();
-                                          },
-                                          selected: splash.pageIndex ==
-                                              screenList.indexOf(model),
-                                          selectedTileColor:
-                                              Colors.black.withAlpha(30),
-                                          leading: CustomAssetImageWidget(
-                                            model.icon,
-                                            color: ResponsiveHelper.isDesktop(
-                                                    context)
-                                                ? ColorResources.getDarkColor(
-                                                    context)
-                                                : Provider.of<ThemeProvider>(
-                                                            context)
-                                                        .darkTheme
-                                                    ? Colors.white
-                                                    : Theme.of(context)
-                                                        .primaryColor,
-                                            width: 25,
-                                            height: 25,
-                                          ),
-                                          title: Text(
-                                              getTranslated(
-                                                  model.title, context),
-                                              style: poppinsRegular.copyWith(
-                                                fontSize:
-                                                    Dimensions.fontSizeLarge,
-                                                color:
-                                                    Provider.of<ThemeProvider>(
-                                                                context)
-                                                            .darkTheme
-                                                        ? Theme.of(context)
-                                                            .textTheme
-                                                            .bodyLarge
-                                                            ?.color
-                                                            ?.withOpacity(
-                                                                _drawerOpacity)
-                                                        : ResponsiveHelper
-                                                                .isDesktop(
-                                                                    context)
-                                                            ? ColorResources
-                                                                .getDarkColor(
-                                                                    context)
-                                                            : Theme.of(context)
-                                                                .hintColor,
-                                              )),
+                                children: menuSections.indexed
+                                    .map((menuCategories) => Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 10),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16.0),
+                                              child:
+                                                  Text(menuCategories.$2.title),
+                                            ),
+                                            ...menuCategories.$2.screens.map(
+                                              (e) => ListTile(
+                                                minTileHeight: 20,
+                                                onTap: () {
+                                                  if (!ResponsiveHelper
+                                                      .isDesktop(context)) {
+                                                    splash
+                                                        .setScreensCategoryIndex(
+                                                            menuCategories.$1);
+                                                    splash.setPageIndex(
+                                                        menuSections[
+                                                                menuCategories
+                                                                    .$1]
+                                                            .screens
+                                                            .indexOf(e));
+                                                  }
+                                                  Navigator.of(context).pop();
+                                                  // drawerController!.toggle();
+                                                },
+                                                selected: splash.pageIndex ==
+                                                    menuSections[splash
+                                                            .screenCategoryIndex]
+                                                        .screens
+                                                        .indexOf(e),
+                                                selectedTileColor:
+                                                    Colors.black.withAlpha(30),
+                                                leading: CustomAssetImageWidget(
+                                                  e.icon,
+                                                  color: ResponsiveHelper
+                                                          .isDesktop(context)
+                                                      ? ColorResources
+                                                          .getDarkColor(context)
+                                                      : Provider.of<ThemeProvider>(
+                                                                  context)
+                                                              .darkTheme
+                                                          ? Colors.white
+                                                          : Theme.of(context)
+                                                              .primaryColor,
+                                                  width: 15,
+                                                  height: 15,
+                                                ),
+                                                title: Text(
+                                                    getTranslated(
+                                                        e.title, context),
+                                                    style:
+                                                        poppinsRegular.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: Dimensions
+                                                          .fontSizeLarge,
+                                                      color: Provider.of<
+                                                                      ThemeProvider>(
+                                                                  context)
+                                                              .darkTheme
+                                                          ? Theme.of(context)
+                                                              .textTheme
+                                                              .bodyLarge
+                                                              ?.color
+                                                              ?.withOpacity(
+                                                                  _drawerOpacity)
+                                                          : ResponsiveHelper
+                                                                  .isDesktop(
+                                                                      context)
+                                                              ? ColorResources
+                                                                  .getDarkColor(
+                                                                      context)
+                                                              : Theme.of(
+                                                                      context)
+                                                                  .hintColor,
+                                                    )),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                          ],
                                         ))
                                     .toList()),
                           ListTile(

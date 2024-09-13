@@ -42,16 +42,8 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_MAP_KEY_HERE&callback=Function.prototype"></script>
 
 
-<script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker.register("/firebase-messaging-sw.js");
-      });
-      window.addEventListener('flutter-first-frame', function () {
-        navigator.serviceWorker.register('flutter_service_worker.js');
-      });
-    }
-  </script>
+<script src="flutter_bootstrap.js" async></script>
+
 
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>

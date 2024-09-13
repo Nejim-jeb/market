@@ -9,7 +9,7 @@ class AppConstants {
   static const double appVersion = 7.3;
   static const AppMode appMode = AppMode.release;
   static const String fontFamily = 'Poppins';
-  static const String baseUrl = 'https://jibliya.com';
+  static const String baseUrl = 'https://admin.jibliya.com';
   static const String configUri = '/api/v1/config';
   static const String bannerUri = '/api/v1/banners';
   static const String categoryUri = '/api/v1/categories';

@@ -105,40 +105,59 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         backgroundColor: Theme.of(context).canvasColor,
         child: Scaffold(
-          bottomNavigationBar: CurvedNavigationBar(
-            key: _bottomNavigationKey,
-            backgroundColor: Colors.transparent,
-            buttonBackgroundColor: Theme.of(context).primaryColor,
-            color: Theme.of(context).primaryColor,
-            index: 0,
-            items: const <Widget>[
-              Icon(
-                Icons.add,
-                size: 30,
-                color: iconColor,
-              ),
-              Icon(
-                Icons.list,
-                size: 30,
-                color: iconColor,
-              ),
-              Icon(
-                Icons.compare_arrows,
-                size: 30,
-                color: iconColor,
-              ),
-              Icon(
-                Icons.call_split,
-                size: 30,
-                color: iconColor,
-              ),
-              Icon(
-                Icons.perm_identity,
-                size: 30,
-                color: iconColor,
-              ),
-            ],
-          ),
+          // bottomNavigationBar: CurvedNavigationBar(
+          //   key: _bottomNavigationKey,
+          //   backgroundColor: Colors.transparent,
+          //   buttonBackgroundColor: Theme.of(context).primaryColor,
+          //   color: Theme.of(context).primaryColor,
+          //   index: 0,
+          //   onTap: (value) {
+          //     switch (value) {
+          //       case 0:
+          //         splashProvider.setScreensCategoryIndex(0);
+          //         splashProvider.setPageIndex(0);
+          //         return;
+          //       case 1:
+          //         splashProvider.setScreensCategoryIndex(0);
+          //         splashProvider.setPageIndex(1);
+          //     }
+          //   },
+          //   items: <Widget>[
+          //     GestureDetector(
+          //       onTap: null,
+          //       child: Image.asset(
+          //         Images.home,
+          //         color: Colors.white,
+          //         width: 30,
+          //         height: 30,
+          //       ),
+          //     ),
+          //     SvgPicture.asset(
+          //       Images.wallet,
+          //       color: Colors.white,
+          //       width: 30,
+          //       height: 30,
+          //     ),
+          //     Image.asset(
+          //       Images.moreIcon,
+          //       color: Colors.white,
+          //       width: 30,
+          //       height: 30,
+          //     ),
+          //     Image.asset(
+          //       Images.order,
+          //       color: Colors.white,
+          //       width: 30,
+          //       height: 30,
+          //     ),
+          //     Image.asset(
+          //       Images.favouriteIcon,
+          //       color: Colors.white,
+          //       width: 30,
+          //       height: 30,
+          //     ),
+          //   ],
+          // ),
           appBar: ResponsiveHelper.isDesktop(context)
               ? const PreferredSize(
                   preferredSize: Size.fromHeight(120), child: WebAppBarWidget())

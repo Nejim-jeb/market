@@ -1,4 +1,3 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/common/enums/footer_type_enum.dart';
 import 'package:flutter_grocery/common/models/config_model.dart';
@@ -11,11 +10,13 @@ import 'package:flutter_grocery/features/auth/providers/auth_provider.dart';
 import 'package:flutter_grocery/features/category/providers/category_provider.dart';
 import 'package:flutter_grocery/features/home/providers/banner_provider.dart';
 import 'package:flutter_grocery/features/home/providers/flash_deal_provider.dart';
+import 'package:flutter_grocery/features/home/screens/bottom_nav_bar.dart';
 import 'package:flutter_grocery/features/home/widgets/all_product_list_widget.dart';
 import 'package:flutter_grocery/features/home/widgets/banners_widget.dart';
 import 'package:flutter_grocery/features/home/widgets/category_web_widget.dart';
 import 'package:flutter_grocery/features/home/widgets/flash_deal_home_card_widget.dart';
 import 'package:flutter_grocery/features/home/widgets/home_item_widget.dart';
+import 'package:flutter_grocery/features/menu/screens/main_screen.dart';
 import 'package:flutter_grocery/features/splash/providers/splash_provider.dart';
 import 'package:flutter_grocery/features/wishlist/providers/wishlist_provider.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
@@ -88,7 +89,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ScrollController scrollController = ScrollController();
-  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
   void initState() {
@@ -97,7 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const iconColor = Colors.white;
     return Consumer<SplashProvider>(builder: (context, splashProvider, child) {
       return RefreshIndicator(
         onRefresh: () async {
@@ -105,59 +104,15 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         backgroundColor: Theme.of(context).canvasColor,
         child: Scaffold(
-          // bottomNavigationBar: CurvedNavigationBar(
-          //   key: _bottomNavigationKey,
-          //   backgroundColor: Colors.transparent,
-          //   buttonBackgroundColor: Theme.of(context).primaryColor,
-          //   color: Theme.of(context).primaryColor,
-          //   index: 0,
-          //   onTap: (value) {
-          //     switch (value) {
-          //       case 0:
-          //         splashProvider.setScreensCategoryIndex(0);
-          //         splashProvider.setPageIndex(0);
-          //         return;
-          //       case 1:
-          //         splashProvider.setScreensCategoryIndex(0);
-          //         splashProvider.setPageIndex(1);
-          //     }
-          //   },
-          //   items: <Widget>[
-          //     GestureDetector(
-          //       onTap: null,
-          //       child: Image.asset(
-          //         Images.home,
-          //         color: Colors.white,
-          //         width: 30,
-          //         height: 30,
-          //       ),
-          //     ),
-          //     SvgPicture.asset(
-          //       Images.wallet,
-          //       color: Colors.white,
-          //       width: 30,
-          //       height: 30,
-          //     ),
-          //     Image.asset(
-          //       Images.moreIcon,
-          //       color: Colors.white,
-          //       width: 30,
-          //       height: 30,
-          //     ),
-          //     Image.asset(
-          //       Images.order,
-          //       color: Colors.white,
-          //       width: 30,
-          //       height: 30,
-          //     ),
-          //     Image.asset(
-          //       Images.favouriteIcon,
-          //       color: Colors.white,
-          //       width: 30,
-          //       height: 30,
-          //     ),
-          //   ],
-          // ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.miniCenterDocked,
+          floatingActionButton: ResponsiveHelper.isMobilePhone()
+              ? FloatingActionButton(
+                  elevation: 2,
+                  onPressed: () => drawerKey.currentState!.openDrawer(),
+                )
+              : const SizedBox.shrink(),
+          bottomNavigationBar: const AppBottomNavigationBar(selectedIndex: 0),
           appBar: ResponsiveHelper.isDesktop(context)
               ? const PreferredSize(
                   preferredSize: Size.fromHeight(120), child: WebAppBarWidget())

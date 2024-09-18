@@ -1,20 +1,27 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery/common/enums/html_type_enum.dart';
 import 'package:flutter_grocery/common/providers/cart_provider.dart';
 import 'package:flutter_grocery/common/providers/theme_provider.dart';
 import 'package:flutter_grocery/common/widgets/custom_pop_scope_widget.dart';
 import 'package:flutter_grocery/common/widgets/third_party_chat_widget.dart';
 import 'package:flutter_grocery/features/address/providers/location_provider.dart';
+import 'package:flutter_grocery/features/address/screens/address_list_screen.dart';
 import 'package:flutter_grocery/features/cart/screens/cart_screen.dart';
+import 'package:flutter_grocery/features/coupon/screens/coupon_screen.dart';
 import 'package:flutter_grocery/features/home/screens/home_screens.dart';
+import 'package:flutter_grocery/features/html/screens/html_viewer_screen.dart';
 import 'package:flutter_grocery/features/menu/domain/models/custom_drawer_controller_model.dart';
 import 'package:flutter_grocery/features/menu/domain/models/main_screen_model.dart';
 import 'package:flutter_grocery/features/menu/screens/menu_screen.dart';
+import 'package:flutter_grocery/features/menu/screens/setting_screen.dart';
 import 'package:flutter_grocery/features/notification/screens/notification_screen.dart';
 import 'package:flutter_grocery/features/order/screens/order_list_screen.dart';
 import 'package:flutter_grocery/features/profile/providers/profile_provider.dart';
 import 'package:flutter_grocery/features/refer_and_earn/screens/refer_and_earn_screen.dart';
 import 'package:flutter_grocery/features/splash/providers/splash_provider.dart';
+import 'package:flutter_grocery/features/support/screens/support_screen.dart';
+import 'package:flutter_grocery/features/wallet_and_loyalty/screens/loyalty_screen.dart';
 import 'package:flutter_grocery/features/wallet_and_loyalty/screens/wallet_screen.dart';
 import 'package:flutter_grocery/features/wishlist/screens/wishlist_screen.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
@@ -27,32 +34,58 @@ import 'package:flutter_grocery/utill/images.dart';
 import 'package:flutter_grocery/utill/styles.dart';
 import 'package:provider/provider.dart';
 
+final drawerKey = GlobalKey<ScaffoldState>();
+
 List<MenuScreensSection> menuSections = [
   MenuScreensSection(
     title: 'Home',
     screens: [
-      MainScreenModel(const HomeScreen(), 'home', Images.home),
+      MainScreenModel(const HomeScreen(), 'home', Images.homeSolid),
       MainScreenModel(
-          const NotificationScreen(), 'notifications', Images.orderList),
-      MainScreenModel(const OrderListScreen(), 'my_order', Images.orderList),
+          const NotificationScreen(), 'notifications', Images.notification),
+      MainScreenModel(const OrderListScreen(), 'my_order', Images.ordersSolid),
       if (Provider.of<SplashProvider>(Get.context!, listen: false)
           .configModel!
           .walletStatus!)
-        MainScreenModel(const WalletScreen(), 'wallet', Images.wallet),
+        MainScreenModel(const WalletScreen(), 'wallet', Images.walletSolid),
       MainScreenModel(
-          const WishListScreen(), 'favourite', Images.favouriteIcon),
+          const WishListScreen(), 'favourite', Images.favoriteSolid),
     ],
   ),
   MenuScreensSection(
     title: 'Operations',
     screens: [
-      MainScreenModel(const CartScreen(), 'shopping_bag', Images.orderBag),
+      MainScreenModel(
+          const AddressListScreen(), 'my_address', Images.homeAddressSolid),
+      MainScreenModel(
+          const CartScreen(), 'track_order', Images.orderTrackSolid),
+      MainScreenModel(const CouponScreen(), 'coupon', Images.couponSolid),
+      MainScreenModel(
+          const LoyaltyScreen(), 'loyalty_point', Images.loyalityPointsSolid),
+      MainScreenModel(
+          const ReferAndEarnScreen(), 'referAndEarn', Images.referAndEarnSolid),
     ],
   ),
   MenuScreensSection(
     title: 'Help & Support',
     screens: [
-      MainScreenModel(const CartScreen(), 'shopping_bag', Images.orderBag),
+      MainScreenModel(const SupportScreen(), 'live_chat', Images.supportSolid),
+      MainScreenModel(
+          const HtmlViewerScreen(htmlType: HtmlType.termsAndCondition),
+          'terms_and_condition',
+          Images.termsConditionSolid),
+      MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.privacyPolicy),
+          'privacy_policy', Images.confidentiallySolid),
+      MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.aboutUs),
+          'about_us', Images.infoSolid),
+      MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.faq), 'faq',
+          Images.notificationOnSolid),
+    ],
+  ),
+  MenuScreensSection(
+    title: 'App Preference',
+    screens: [
+      MainScreenModel(const SettingsScreen(), 'settings', Images.settings),
     ],
   ),
 ];
@@ -122,7 +155,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   bool canExit = kIsWeb;
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     if (widget.isReload) {
@@ -158,10 +190,10 @@ class _MainScreenState extends State<MainScreen> {
                   // }
                 },
                 child: Scaffold(
-                  key: _scaffoldKey,
+                  key: drawerKey,
                   drawer: Drawer(
                     child: MenuWidget(
-                      scaffoldKey: _scaffoldKey,
+                      scaffoldKey: drawerKey,
                     ),
                   ),
                   floatingActionButton: !ResponsiveHelper.isDesktop(context)
@@ -182,7 +214,7 @@ class _MainScreenState extends State<MainScreen> {
                                   height: 30,
                                   width: 30),
                               onPressed: () {
-                                _scaffoldKey.currentState!.openDrawer();
+                                drawerKey.currentState!.openDrawer();
                                 // widget.drawerController.toggle();
                               }),
                           title: splash.pageIndex == 0

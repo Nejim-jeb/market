@@ -58,7 +58,9 @@ class _OrderListScreenState extends State<OrderListScreen>
           ? null
           : (ResponsiveHelper.isDesktop(context)
               ? const PreferredSize(
-                  preferredSize: Size.fromHeight(120), child: WebAppBarWidget())
+                  preferredSize: Size.fromHeight(120),
+                  child: WebAppBarWidget(),
+                )
               : const AppBarBaseWidget()) as PreferredSizeWidget?,
       body: isLoggedIn
           ? Consumer<OrderProvider>(builder: (context, orderProvider, child) {

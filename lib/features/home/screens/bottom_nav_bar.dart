@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery/features/splash/providers/splash_provider.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
 import 'package:flutter_grocery/localization/language_constraints.dart';
 import 'package:flutter_grocery/utill/images.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class AppBottomNavigationBar extends StatelessWidget {
   const AppBottomNavigationBar({
     Key? key,
     required this.selectedIndex,
   }) : super(key: key);
+
   final int selectedIndex;
+
   @override
   Widget build(BuildContext context) {
+    final splash = Provider.of<SplashProvider>(context);
     return ResponsiveHelper.isMobilePhone()
         ? Container(
             decoration: BoxDecoration(
@@ -31,7 +36,11 @@ class AppBottomNavigationBar extends StatelessWidget {
                   child: BottomAppBarItem(
                     selectedIndex: selectedIndex,
                     childNumber: 0,
-                    onPressed: () {},
+                    onPressed: () {
+                      splash
+                        ..setScreensCategoryIndex(0)
+                        ..setPageIndex(0);
+                    },
                     assetPath: Images.homeSolid,
                     label: getTranslated('home', context),
                   ),
@@ -41,8 +50,12 @@ class AppBottomNavigationBar extends StatelessWidget {
                   child: BottomAppBarItem(
                     selectedIndex: selectedIndex,
                     childNumber: 1,
-                    onPressed: () {},
-                    assetPath: Images.walletSolid,
+                    onPressed: () {
+                      splash
+                        ..setScreensCategoryIndex(1)
+                        ..setPageIndex(2);
+                    },
+                    assetPath: Images.couponSolid,
                     label: getTranslated('wallet', context),
                   ),
                 ),
@@ -52,7 +65,11 @@ class AppBottomNavigationBar extends StatelessWidget {
                   child: BottomAppBarItem(
                     selectedIndex: selectedIndex,
                     childNumber: 2,
-                    onPressed: () {},
+                    onPressed: () {
+                      splash
+                        ..setScreensCategoryIndex(0)
+                        ..setPageIndex(2);
+                    },
                     assetPath: Images.ordersSolid,
                     label: getTranslated('orders', context),
                   ),
@@ -62,7 +79,11 @@ class AppBottomNavigationBar extends StatelessWidget {
                   child: BottomAppBarItem(
                     selectedIndex: selectedIndex,
                     childNumber: 3,
-                    onPressed: () {},
+                    onPressed: () {
+                      splash
+                        ..setScreensCategoryIndex(0)
+                        ..setPageIndex(3);
+                    },
                     assetPath: Images.favoriteSolid,
                     label: getTranslated('favourite', context),
                   ),

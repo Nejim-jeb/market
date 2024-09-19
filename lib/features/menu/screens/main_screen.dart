@@ -44,12 +44,12 @@ List<MenuScreensSection> menuSections = [
       MainScreenModel(
           const NotificationScreen(), 'notifications', Images.notification),
       MainScreenModel(const OrderListScreen(), 'my_order', Images.ordersSolid),
+      MainScreenModel(
+          const WishListScreen(), 'favourite', Images.favoriteSolid),
       if (Provider.of<SplashProvider>(Get.context!, listen: false)
           .configModel!
           .walletStatus!)
         MainScreenModel(const WalletScreen(), 'wallet', Images.walletSolid),
-      MainScreenModel(
-          const WishListScreen(), 'favourite', Images.favoriteSolid),
     ],
   ),
   MenuScreensSection(

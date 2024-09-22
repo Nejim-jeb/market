@@ -16,7 +16,6 @@ import 'package:flutter_grocery/features/home/widgets/banners_widget.dart';
 import 'package:flutter_grocery/features/home/widgets/category_web_widget.dart';
 import 'package:flutter_grocery/features/home/widgets/flash_deal_home_card_widget.dart';
 import 'package:flutter_grocery/features/home/widgets/home_item_widget.dart';
-import 'package:flutter_grocery/features/menu/screens/main_screen.dart';
 import 'package:flutter_grocery/features/splash/providers/splash_provider.dart';
 import 'package:flutter_grocery/features/wishlist/providers/wishlist_provider.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
@@ -107,10 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.miniCenterDocked,
           floatingActionButton: ResponsiveHelper.isMobilePhone()
-              ? FloatingActionButton(
-                  elevation: 2,
-                  onPressed: () => drawerKey.currentState!.openDrawer(),
-                )
+              ? const BottomNavBarFAB()
               : const SizedBox.shrink(),
           bottomNavigationBar: const AppBottomNavigationBar(selectedIndex: 0),
           appBar: ResponsiveHelper.isDesktop(context)

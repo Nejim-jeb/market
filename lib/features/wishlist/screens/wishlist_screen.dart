@@ -8,7 +8,6 @@ import 'package:flutter_grocery/common/widgets/product_widget.dart';
 import 'package:flutter_grocery/common/widgets/web_app_bar_widget.dart';
 import 'package:flutter_grocery/features/auth/providers/auth_provider.dart';
 import 'package:flutter_grocery/features/home/screens/bottom_nav_bar.dart';
-import 'package:flutter_grocery/features/menu/screens/main_screen.dart';
 import 'package:flutter_grocery/features/wishlist/providers/wishlist_provider.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
 import 'package:flutter_grocery/localization/app_localization.dart';
@@ -39,10 +38,7 @@ class _WishListScreenState extends State<WishListScreen> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: ResponsiveHelper.isMobilePhone()
-          ? FloatingActionButton(
-              elevation: 2,
-              onPressed: () => drawerKey.currentState!.openDrawer(),
-            )
+          ? const BottomNavBarFAB()
           : const SizedBox.shrink(),
       bottomNavigationBar: const AppBottomNavigationBar(selectedIndex: 3),
       appBar: ResponsiveHelper.isMobilePhone()

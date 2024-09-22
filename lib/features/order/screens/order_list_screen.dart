@@ -4,7 +4,6 @@ import 'package:flutter_grocery/common/widgets/not_login_widget.dart';
 import 'package:flutter_grocery/common/widgets/web_app_bar_widget.dart';
 import 'package:flutter_grocery/features/auth/providers/auth_provider.dart';
 import 'package:flutter_grocery/features/home/screens/bottom_nav_bar.dart';
-import 'package:flutter_grocery/features/menu/screens/main_screen.dart';
 import 'package:flutter_grocery/features/order/providers/order_provider.dart';
 import 'package:flutter_grocery/features/order/widgets/order_widget.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
@@ -48,10 +47,7 @@ class _OrderListScreenState extends State<OrderListScreen>
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: ResponsiveHelper.isMobilePhone()
-          ? FloatingActionButton(
-              elevation: 2,
-              onPressed: () => drawerKey.currentState!.openDrawer(),
-            )
+          ? const BottomNavBarFAB()
           : const SizedBox.shrink(),
       bottomNavigationBar: const AppBottomNavigationBar(selectedIndex: 2),
       appBar: ResponsiveHelper.isMobilePhone()

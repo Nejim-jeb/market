@@ -28,7 +28,6 @@ import 'package:flutter_grocery/helper/responsive_helper.dart';
 import 'package:flutter_grocery/helper/route_helper.dart';
 import 'package:flutter_grocery/localization/language_constraints.dart';
 import 'package:flutter_grocery/main.dart';
-import 'package:flutter_grocery/utill/app_constants.dart';
 import 'package:flutter_grocery/utill/dimensions.dart';
 import 'package:flutter_grocery/utill/images.dart';
 import 'package:flutter_grocery/utill/styles.dart';
@@ -224,32 +223,56 @@ class _MainScreenState extends State<MainScreen> {
                       : AppBar(
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
-                          leading: IconButton(
-                              icon: Image.asset(Images.moreIcon,
+                          leadingWidth: 100,
+                          leading: Row(
+                            children: [
+                              IconButton(
+                                  icon: Image.asset(Images.moreIcon,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                      height: 30,
+                                      width: 30),
+                                  onPressed: () {
+                                    drawerKey.currentState!.openDrawer();
+                                    // widget.drawerController.toggle();
+                                  }),
+                              IconButton(
+                                icon: Image.asset(
+                                  Images.search,
                                   color:
                                       Theme.of(context).colorScheme.onPrimary,
+                                  width: 30,
                                   height: 30,
-                                  width: 30),
-                              onPressed: () {
-                                drawerKey.currentState!.openDrawer();
-                                // widget.drawerController.toggle();
-                              }),
+                                ),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, RouteHelper.searchProduct);
+                                },
+                              ),
+                            ],
+                          ),
+                          centerTitle: true,
                           title: splash.pageIndex == 0
-                              ? Row(children: [
-                                  Image.asset(Images.appLogo, width: 25),
-                                  const SizedBox(
-                                      width: Dimensions.paddingSizeSmall),
-                                  Expanded(
-                                      child: Text(
-                                    AppConstants.appName,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: poppinsMedium.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary),
-                                  )),
-                                ])
+                              ? Image.asset(
+                                  Images.appLogoNoBg,
+                                )
+                              // Row(children: [
+                              //     Image.asset(Images.appLogo, width: 25),
+                              //     const SizedBox(
+                              //         width: Dimensions.paddingSizeSmall),
+                              //     Expanded(
+                              //         child: Text(
+                              //       AppConstants.appName,
+                              //       maxLines: 1,
+                              //       textAlign: TextAlign.center,
+                              //       overflow: TextOverflow.ellipsis,
+                              //       style: poppinsMedium.copyWith(
+                              //           color: Theme.of(context)
+                              //               .colorScheme
+                              //               .onPrimary),
+                              //     )),
+                              //   ])
                               : Text(
                                   getTranslated(
                                       menuSections[splash.screenCategoryIndex]

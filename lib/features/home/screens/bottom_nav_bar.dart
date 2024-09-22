@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery/features/menu/screens/main_screen.dart';
 import 'package:flutter_grocery/features/splash/providers/splash_provider.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
 import 'package:flutter_grocery/localization/language_constraints.dart';
@@ -136,6 +137,27 @@ class BottomAppBarItem extends StatelessWidget {
           // )
         ],
       ),
+    );
+  }
+}
+
+class BottomNavBarFAB extends StatelessWidget {
+  const BottomNavBarFAB({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      elevation: 2,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50))),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Image.asset(
+          Images.moreIcon,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+      ),
+      onPressed: () => drawerKey.currentState!.openDrawer(),
     );
   }
 }

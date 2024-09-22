@@ -9,7 +9,6 @@ import 'package:flutter_grocery/common/widgets/web_app_bar_widget.dart';
 import 'package:flutter_grocery/features/auth/providers/auth_provider.dart';
 import 'package:flutter_grocery/features/coupon/providers/coupon_provider.dart';
 import 'package:flutter_grocery/features/home/screens/bottom_nav_bar.dart';
-import 'package:flutter_grocery/features/menu/screens/main_screen.dart';
 import 'package:flutter_grocery/features/splash/providers/splash_provider.dart';
 import 'package:flutter_grocery/helper/custom_snackbar_helper.dart';
 import 'package:flutter_grocery/helper/date_converter_helper.dart';
@@ -63,10 +62,7 @@ class _CouponScreenState extends State<CouponScreen> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: ResponsiveHelper.isMobilePhone()
-          ? FloatingActionButton(
-              elevation: 2,
-              onPressed: () => drawerKey.currentState!.openDrawer(),
-            )
+          ? const BottomNavBarFAB()
           : const SizedBox.shrink(),
       bottomNavigationBar: const AppBottomNavigationBar(selectedIndex: 1),
       appBar: ResponsiveHelper.isMobilePhone()

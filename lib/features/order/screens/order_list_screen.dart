@@ -15,8 +15,8 @@ import 'package:flutter_grocery/utill/styles.dart';
 import 'package:provider/provider.dart';
 
 class OrderListScreen extends StatefulWidget {
-  const OrderListScreen({Key? key}) : super(key: key);
-
+  const OrderListScreen({Key? key, this.canPop}) : super(key: key);
+  final bool? canPop;
   @override
   State<OrderListScreen> createState() => _OrderListScreenState();
 }
@@ -61,7 +61,9 @@ class _OrderListScreenState extends State<OrderListScreen>
                   preferredSize: Size.fromHeight(120),
                   child: WebAppBarWidget(),
                 )
-              : const AppBarBaseWidget()) as PreferredSizeWidget?,
+              : widget.canPop == false
+                  ? null
+                  : const AppBarBaseWidget()) as PreferredSizeWidget?,
       body: isLoggedIn
           ? Consumer<OrderProvider>(builder: (context, orderProvider, child) {
               return Column(

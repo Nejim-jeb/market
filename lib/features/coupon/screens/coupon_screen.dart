@@ -23,8 +23,8 @@ import 'package:provider/provider.dart';
 import '../../../common/widgets/footer_web_widget.dart';
 
 class CouponScreen extends StatefulWidget {
-  const CouponScreen({Key? key}) : super(key: key);
-
+  const CouponScreen({Key? key, this.canPop}) : super(key: key);
+  final bool? canPop;
   @override
   State<CouponScreen> createState() => _CouponScreenState();
 }
@@ -74,7 +74,9 @@ class _CouponScreenState extends State<CouponScreen> {
           : (ResponsiveHelper.isDesktop(context)
               ? const PreferredSize(
                   preferredSize: Size.fromHeight(120), child: WebAppBarWidget())
-              : const AppBarBaseWidget()) as PreferredSizeWidget?,
+              : widget.canPop == false
+                  ? null
+                  : const AppBarBaseWidget()) as PreferredSizeWidget?,
       body: isLoggedIn || isGuestCheckout
           ? Consumer<CouponProvider>(
               builder: (context, couponProvider, child) {

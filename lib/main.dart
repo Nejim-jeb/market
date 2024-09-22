@@ -45,6 +45,7 @@ import 'package:url_strategy/url_strategy.dart';
 
 import 'common/widgets/cookies_widget.dart';
 import 'di_container.dart' as di;
+import 'firebase_options.dart';
 import 'helper/notification_helper.dart';
 import 'localization/app_localization.dart';
 
@@ -77,14 +78,7 @@ Future<void> main() async {
     }
   } else {
     await Firebase.initializeApp(
-        options: const FirebaseOptions(
-            apiKey: "AIzaSyDuBlqmsh9xw17osLOuEn7iqHtDlpkulcM",
-            authDomain: "grofresh-3986f.firebaseapp.com",
-            projectId: "grofresh-3986f",
-            storageBucket: "grofresh-3986f.appspot.com",
-            messagingSenderId: "250728969979",
-            appId: "1:250728969979:web:b79642a7b2d2400b75a25e",
-            measurementId: "G-X1HCG4K8HJ"));
+        options: DefaultFirebaseOptions.currentPlatform);
 
     await FacebookAuth.instance.webAndDesktopInitialize(
       appId: "YOUR_FACEBOOK_KEY_HERE",

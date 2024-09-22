@@ -42,10 +42,15 @@ List<MenuScreensSection> menuSections = [
     screens: [
       MainScreenModel(const HomeScreen(), 'home', Images.homeSolid),
       MainScreenModel(
-          const NotificationScreen(), 'notifications', Images.notification),
-      MainScreenModel(const OrderListScreen(), 'my_order', Images.ordersSolid),
+          const NotificationScreen(
+            canPop: false,
+          ),
+          'notifications',
+          Images.notification),
       MainScreenModel(
-          const WishListScreen(), 'favourite', Images.favoriteSolid),
+          const OrderListScreen(canPop: false), 'my_order', Images.ordersSolid),
+      MainScreenModel(const WishListScreen(canPop: false), 'favourite',
+          Images.favoriteSolid),
       if (Provider.of<SplashProvider>(Get.context!, listen: false)
           .configModel!
           .walletStatus!)
@@ -55,11 +60,12 @@ List<MenuScreensSection> menuSections = [
   MenuScreensSection(
     title: 'Operations',
     screens: [
+      MainScreenModel(const AddressListScreen(canPop: false), 'my_address',
+          Images.homeAddressSolid),
+      MainScreenModel(const CartScreen(canPop: false), 'track_order',
+          Images.orderTrackSolid),
       MainScreenModel(
-          const AddressListScreen(), 'my_address', Images.homeAddressSolid),
-      MainScreenModel(
-          const CartScreen(), 'track_order', Images.orderTrackSolid),
-      MainScreenModel(const CouponScreen(), 'coupon', Images.couponSolid),
+          const CouponScreen(canPop: false), 'coupon', Images.couponSolid),
       MainScreenModel(
           const LoyaltyScreen(), 'loyalty_point', Images.loyalityPointsSolid),
       MainScreenModel(
@@ -71,21 +77,30 @@ List<MenuScreensSection> menuSections = [
     screens: [
       MainScreenModel(const SupportScreen(), 'live_chat', Images.supportSolid),
       MainScreenModel(
-          const HtmlViewerScreen(htmlType: HtmlType.termsAndCondition),
+          const HtmlViewerScreen(
+              htmlType: HtmlType.termsAndCondition, canPop: false),
           'terms_and_condition',
           Images.termsConditionSolid),
-      MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.privacyPolicy),
-          'privacy_policy', Images.confidentiallySolid),
-      MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.aboutUs),
-          'about_us', Images.infoSolid),
-      MainScreenModel(const HtmlViewerScreen(htmlType: HtmlType.faq), 'faq',
+      MainScreenModel(
+          const HtmlViewerScreen(
+              htmlType: HtmlType.privacyPolicy, canPop: false),
+          'privacy_policy',
+          Images.confidentiallySolid),
+      MainScreenModel(
+          const HtmlViewerScreen(htmlType: HtmlType.aboutUs, canPop: false),
+          'about_us',
+          Images.infoSolid),
+      MainScreenModel(
+          const HtmlViewerScreen(htmlType: HtmlType.faq, canPop: false),
+          'faq',
           Images.notificationOnSolid),
     ],
   ),
   MenuScreensSection(
     title: 'App Preference',
     screens: [
-      MainScreenModel(const SettingsScreen(), 'settings', Images.settings),
+      MainScreenModel(
+          const SettingsScreen(canPop: false), 'settings', Images.settings),
     ],
   ),
 ];
@@ -207,10 +222,12 @@ class _MainScreenState extends State<MainScreen> {
                   appBar: ResponsiveHelper.isDesktop(context)
                       ? null
                       : AppBar(
-                          backgroundColor: Theme.of(context).cardColor,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
                           leading: IconButton(
                               icon: Image.asset(Images.moreIcon,
-                                  color: Theme.of(context).primaryColor,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
                                   height: 30,
                                   width: 30),
                               onPressed: () {
@@ -228,7 +245,9 @@ class _MainScreenState extends State<MainScreen> {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: poppinsMedium.copyWith(
-                                        color: Theme.of(context).primaryColor),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
                                   )),
                                 ])
                               : Text(
@@ -239,18 +258,22 @@ class _MainScreenState extends State<MainScreen> {
                                       context),
                                   style: poppinsMedium.copyWith(
                                       fontSize: Dimensions.fontSizeLarge,
-                                      color: Theme.of(context).primaryColor),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary),
                                 ),
                           actions: splash.pageIndex == 0
                               ? [
-                                  IconButton(
-                                    icon: Image.asset(Images.search,
-                                        color: Theme.of(context).primaryColor,
-                                        width: 25),
-                                    onPressed: () {
+                                  GestureDetector(
+                                    onTap: () {
                                       Navigator.pushNamed(
-                                          context, RouteHelper.searchProduct);
+                                          context, RouteHelper.notification);
                                     },
+                                    child: Icon(Icons.notifications,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                        size: 30),
                                   ),
                                   IconButton(
                                       icon: Stack(
@@ -258,10 +281,10 @@ class _MainScreenState extends State<MainScreen> {
                                           children: [
                                             Icon(Icons.shopping_cart,
                                                 color: Theme.of(context)
-                                                    .hintColor
-                                                    .withOpacity(isDarkTheme
-                                                        ? 0.9
-                                                        : 0.4),
+                                                    .colorScheme
+                                                    .onPrimary
+                                                    .withOpacity(
+                                                        isDarkTheme ? 0.9 : 1),
                                                 size: 30),
                                             Positioned(
                                               top: -7,
@@ -272,7 +295,8 @@ class _MainScreenState extends State<MainScreen> {
                                                 decoration: BoxDecoration(
                                                     shape: BoxShape.circle,
                                                     color: Theme.of(context)
-                                                        .primaryColor),
+                                                        .colorScheme
+                                                        .error),
                                                 child: Text(
                                                     '${Provider.of<CartProvider>(context).cartList.length}',
                                                     style: TextStyle(
@@ -286,7 +310,7 @@ class _MainScreenState extends State<MainScreen> {
                                         splash.setPageIndex(2);
                                       }),
                                 ]
-                              : splash.pageIndex == 2
+                              : splash.pageIndex == 99
                                   ? [
                                       Center(child: Consumer<CartProvider>(
                                           builder: (context, cartProvider, _) {
@@ -294,7 +318,8 @@ class _MainScreenState extends State<MainScreen> {
                                             '${cartProvider.cartList.length} ${getTranslated('items', context)}',
                                             style: poppinsMedium.copyWith(
                                                 color: Theme.of(context)
-                                                    .primaryColor));
+                                                    .colorScheme
+                                                    .onPrimary));
                                       })),
                                       const SizedBox(width: 20)
                                     ]

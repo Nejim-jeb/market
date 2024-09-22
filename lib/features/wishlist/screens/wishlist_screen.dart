@@ -19,8 +19,8 @@ import 'package:flutter_grocery/utill/styles.dart';
 import 'package:provider/provider.dart';
 
 class WishListScreen extends StatefulWidget {
-  const WishListScreen({Key? key}) : super(key: key);
-
+  const WishListScreen({Key? key, this.canPop}) : super(key: key);
+  final bool? canPop;
   @override
   State<WishListScreen> createState() => _WishListScreenState();
 }
@@ -50,7 +50,9 @@ class _WishListScreenState extends State<WishListScreen> {
           : (ResponsiveHelper.isDesktop(context)
               ? const PreferredSize(
                   preferredSize: Size.fromHeight(120), child: WebAppBarWidget())
-              : const AppBarBaseWidget()) as PreferredSizeWidget?,
+              : widget.canPop == false
+                  ? null
+                  : const AppBarBaseWidget()) as PreferredSizeWidget?,
       body: _isLoggedIn
           ? Consumer<WishListProvider>(
               builder: (context, wishlistProvider, child) {

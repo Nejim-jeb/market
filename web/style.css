@@ -1,6 +1,7 @@
 /* Reset */
 :root {
-  --primary-color: #01684B;
+  --primary-color: #4B06A8;
+  /* --primary-color: #01684B; */
 }
 *, *::before, *::after {
   box-sizing: border-box;

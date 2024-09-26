@@ -32,14 +32,17 @@ import 'package:flutter_grocery/utill/styles.dart';
 import 'package:provider/provider.dart';
 
 class WebAppBarWidget extends StatefulWidget implements PreferredSizeWidget {
-  const WebAppBarWidget({Key? key}) : super(key: key);
-
+  const WebAppBarWidget({
+    Key? key,
+    this.size,
+  }) : super(key: key);
+  final Size? size;
   @override
   State<WebAppBarWidget> createState() => _WebAppBarWidgetState();
 
   @override
   // TODO: implement preferredSize
-  Size get preferredSize => throw UnimplementedError();
+  Size get preferredSize => size != null ? size! : throw UnimplementedError();
 }
 
 class _WebAppBarWidgetState extends State<WebAppBarWidget> {

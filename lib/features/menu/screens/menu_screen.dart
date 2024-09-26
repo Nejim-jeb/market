@@ -4,6 +4,7 @@ import 'package:flutter_grocery/common/providers/localization_provider.dart';
 import 'package:flutter_grocery/common/providers/theme_provider.dart';
 import 'package:flutter_grocery/common/widgets/custom_asset_image_widget.dart';
 import 'package:flutter_grocery/common/widgets/custom_image_widget.dart';
+import 'package:flutter_grocery/common/widgets/web_app_bar_widget.dart';
 import 'package:flutter_grocery/features/address/providers/location_provider.dart';
 import 'package:flutter_grocery/features/auth/providers/auth_provider.dart';
 import 'package:flutter_grocery/features/menu/domain/models/custom_drawer_controller_model.dart';
@@ -97,96 +98,127 @@ class MenuWidget extends StatelessWidget {
           //     ? const PreferredSize(
           //         preferredSize: Size.fromHeight(120), child: WebAppBarWidget())
           //     : null,
-          ColoredBox(
-        color: Provider.of<ThemeProvider>(context).darkTheme ||
-                ResponsiveHelper.isDesktop(context)
-            ? Theme.of(context).canvasColor
-            : Colors.white,
-        child: SafeArea(
-          child: ResponsiveHelper.isDesktop(context)
-              ? MenuListWebWidget(isLoggedIn: isLoggedIn)
-              : SingleChildScrollView(
-                  child: SizedBox(
-                    width: 300,
-                    child: Consumer<SplashProvider>(
-                      builder: (context, splash, child) {
-                        return Column(children: [
-                          Consumer<ProfileProvider>(
-                            builder: (context, profileProvider, child) => Row(
-                              children: [
-                                Expanded(
-                                  child: ColoredBox(
-                                    color: Provider.of<ThemeProvider>(context)
-                                            .darkTheme
-                                        ? Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge!
-                                            .color!
-                                            .withOpacity(_drawerOpacity)
-                                        : ResponsiveHelper.isDesktop(context)
-                                            ? Theme.of(context).primaryColor
-                                            : Theme.of(context).primaryColor,
-                                    child: ListTile(
-                                      onTap: () {
-                                        Navigator.of(context).pushNamed(
-                                            RouteHelper.profile,
-                                            arguments: const ProfileScreen());
-                                      },
-                                      leading: ClipOval(
-                                        child: isLoggedIn
-                                            ? splashProvider.baseUrls != null
-                                                ? CustomImageWidget(
-                                                    placeholder: Images.profile,
-                                                    image:
-                                                        '${splashProvider.baseUrls?.customerImageUrl}/${profileProvider.userInfoModel?.image}',
-                                                    height: 50,
-                                                    width: 50,
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : const SizedBox()
-                                            : Image.asset(Images.profile,
-                                                height: 50,
-                                                width: 50,
-                                                fit: BoxFit.cover),
-                                      ),
-                                      title: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            isLoggedIn
-                                                ? profileProvider
-                                                            .userInfoModel !=
-                                                        null
-                                                    ? Text(
-                                                        '${profileProvider.userInfoModel!.fName ?? ''} ${profileProvider.userInfoModel!.lName ?? ''}',
-                                                        style: poppinsRegular
-                                                            .copyWith(
-                                                          color: Provider.of<
-                                                                          ThemeProvider>(
+          Scaffold(
+        appBar: ResponsiveHelper.isDesktop(context)
+            ? const PreferredSize(
+                preferredSize: Size.fromHeight(120), child: WebAppBarWidget())
+            : null,
+        body: ColoredBox(
+          color: Provider.of<ThemeProvider>(context).darkTheme ||
+                  ResponsiveHelper.isDesktop(context)
+              ? Theme.of(context).canvasColor
+              : Colors.white,
+          child: SafeArea(
+            child: ResponsiveHelper.isDesktop(context)
+                ? MenuListWebWidget(isLoggedIn: isLoggedIn)
+                : SingleChildScrollView(
+                    child: SizedBox(
+                      width: 300,
+                      child: Consumer<SplashProvider>(
+                        builder: (context, splash, child) {
+                          return Column(children: [
+                            Consumer<ProfileProvider>(
+                              builder: (context, profileProvider, child) => Row(
+                                children: [
+                                  Expanded(
+                                    child: ColoredBox(
+                                      color: Provider.of<ThemeProvider>(context)
+                                              .darkTheme
+                                          ? Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .color!
+                                              .withOpacity(_drawerOpacity)
+                                          : ResponsiveHelper.isDesktop(context)
+                                              ? Theme.of(context).primaryColor
+                                              : Theme.of(context).primaryColor,
+                                      child: ListTile(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                              RouteHelper.profile,
+                                              arguments: const ProfileScreen());
+                                        },
+                                        leading: ClipOval(
+                                          child: isLoggedIn
+                                              ? splashProvider.baseUrls != null
+                                                  ? CustomImageWidget(
+                                                      placeholder:
+                                                          Images.profile,
+                                                      image:
+                                                          '${splashProvider.baseUrls?.customerImageUrl}/${profileProvider.userInfoModel?.image}',
+                                                      height: 50,
+                                                      width: 50,
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : const SizedBox()
+                                              : Image.asset(Images.profile,
+                                                  height: 50,
+                                                  width: 50,
+                                                  fit: BoxFit.cover),
+                                        ),
+                                        title: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              isLoggedIn
+                                                  ? profileProvider
+                                                              .userInfoModel !=
+                                                          null
+                                                      ? Text(
+                                                          '${profileProvider.userInfoModel!.fName ?? ''} ${profileProvider.userInfoModel!.lName ?? ''}',
+                                                          style: poppinsRegular
+                                                              .copyWith(
+                                                            color: Provider.of<
+                                                                            ThemeProvider>(
+                                                                        context)
+                                                                    .darkTheme
+                                                                ? Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .bodyLarge
+                                                                    ?.color
+                                                                    ?.withOpacity(
+                                                                        _drawerOpacity)
+                                                                : ResponsiveHelper
+                                                                        .isDesktop(
+                                                                            context)
+                                                                    ? ColorResources
+                                                                        .getDarkColor(
+                                                                            context)
+                                                                    : Theme.of(
+                                                                            context)
+                                                                        .canvasColor,
+                                                          ),
+                                                        )
+                                                      : Container(
+                                                          height: 10,
+                                                          width: 150,
+                                                          color: ResponsiveHelper
+                                                                  .isDesktop(
                                                                       context)
-                                                                  .darkTheme
-                                                              ? Theme.of(
+                                                              ? ColorResources
+                                                                  .getDarkColor(
                                                                       context)
-                                                                  .textTheme
-                                                                  .bodyLarge
-                                                                  ?.color
-                                                                  ?.withOpacity(
-                                                                      _drawerOpacity)
-                                                              : ResponsiveHelper.isDesktop(
+                                                              : Theme.of(
                                                                       context)
-                                                                  ? ColorResources
-                                                                      .getDarkColor(
-                                                                          context)
-                                                                  : Theme.of(
-                                                                          context)
-                                                                      .canvasColor,
-                                                        ),
-                                                      )
-                                                    : Container(
-                                                        height: 10,
-                                                        width: 150,
-                                                        color:
-                                                            ResponsiveHelper
+                                                                  .canvasColor)
+                                                  : Text(
+                                                      getTranslated(
+                                                          'guest', context),
+                                                      style: poppinsRegular
+                                                          .copyWith(
+                                                        color: Provider.of<
+                                                                        ThemeProvider>(
+                                                                    context)
+                                                                .darkTheme
+                                                            ? Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyLarge
+                                                                ?.color
+                                                                ?.withOpacity(
+                                                                    _drawerOpacity)
+                                                            : ResponsiveHelper
                                                                     .isDesktop(
                                                                         context)
                                                                 ? ColorResources
@@ -194,10 +226,22 @@ class MenuWidget extends StatelessWidget {
                                                                         context)
                                                                 : Theme.of(
                                                                         context)
-                                                                    .canvasColor)
-                                                : Text(
-                                                    getTranslated(
-                                                        'guest', context),
+                                                                    .canvasColor,
+                                                      ),
+                                                    ),
+                                              if (isLoggedIn)
+                                                const SizedBox(
+                                                    height: Dimensions
+                                                        .paddingSizeSmall),
+                                              if (isLoggedIn &&
+                                                  profileProvider
+                                                          .userInfoModel !=
+                                                      null)
+                                                Text(
+                                                    profileProvider
+                                                            .userInfoModel!
+                                                            .phone ??
+                                                        '',
                                                     style:
                                                         poppinsRegular.copyWith(
                                                       color: Provider.of<
@@ -219,203 +263,176 @@ class MenuWidget extends StatelessWidget {
                                                               : Theme.of(
                                                                       context)
                                                                   .canvasColor,
-                                                    ),
-                                                  ),
-                                            if (isLoggedIn)
-                                              const SizedBox(
-                                                  height: Dimensions
-                                                      .paddingSizeSmall),
-                                            if (isLoggedIn &&
-                                                profileProvider.userInfoModel !=
-                                                    null)
-                                              Text(
-                                                  profileProvider.userInfoModel!
-                                                          .phone ??
-                                                      '',
-                                                  style:
-                                                      poppinsRegular.copyWith(
-                                                    color: Provider.of<
-                                                                    ThemeProvider>(
-                                                                context)
-                                                            .darkTheme
-                                                        ? Theme.of(context)
-                                                            .textTheme
-                                                            .bodyLarge
-                                                            ?.color
-                                                            ?.withOpacity(
-                                                                _drawerOpacity)
-                                                        : ResponsiveHelper
-                                                                .isDesktop(
-                                                                    context)
-                                                            ? ColorResources
-                                                                .getDarkColor(
-                                                                    context)
-                                                            : Theme.of(context)
-                                                                .canvasColor,
-                                                  )),
-                                          ]),
+                                                    )),
+                                            ]),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                //   IconButton(
-                                //     icon: Icon(Icons.notifications,
-                                //         color: Provider.of<ThemeProvider>(context)
-                                //                 .darkTheme
-                                //             ? Theme.of(context)
-                                //                 .textTheme
-                                //                 .bodyLarge
-                                //                 ?.color
-                                //                 ?.withOpacity(_drawerOpacity)
-                                //             : ResponsiveHelper.isDesktop(context)
-                                //                 ? ColorResources.getDarkColor(
-                                //                     context)
-                                //                 : Theme.of(context).canvasColor),
-                                //     onPressed: () {
-                                //       Navigator.pushNamed(
-                                //           context, RouteHelper.notification,
-                                //           arguments: const NotificationScreen());
-                                //     },
-                                //   ),
-                              ],
-                            ),
-                          ),
-                          // const SizedBox(height: 50),
-                          if (!ResponsiveHelper.isDesktop(context))
-                            Column(
-                                children: menuSections.indexed
-                                    .map((menuCategories) => Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const SizedBox(height: 10),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 16.0),
-                                              child:
-                                                  Text(menuCategories.$2.title),
-                                            ),
-                                            ...menuCategories.$2.screens.map(
-                                              (e) => ListTile(
-                                                minTileHeight: 20,
-                                                onTap: () {
-                                                  if (!ResponsiveHelper
-                                                      .isDesktop(context)) {
-                                                    splash
-                                                        .setScreensCategoryIndex(
-                                                            menuCategories.$1);
-                                                    splash.setPageIndex(
-                                                        menuSections[
-                                                                menuCategories
-                                                                    .$1]
-                                                            .screens
-                                                            .indexOf(e));
-                                                  }
-                                                  Navigator.of(context).pop();
-                                                  // drawerController!.toggle();
-                                                },
-                                                selected: splash.pageIndex ==
-                                                    menuSections[splash
-                                                            .screenCategoryIndex]
-                                                        .screens
-                                                        .indexOf(e),
-                                                selectedTileColor:
-                                                    Colors.black.withAlpha(30),
-                                                leading: CustomAssetImageWidget(
-                                                  e.icon,
-                                                  color: ResponsiveHelper
-                                                          .isDesktop(context)
-                                                      ? ColorResources
-                                                          .getDarkColor(context)
-                                                      : Provider.of<ThemeProvider>(
-                                                                  context)
-                                                              .darkTheme
-                                                          ? Colors.white
-                                                          : Theme.of(context)
-                                                              .primaryColor,
-                                                  width: 15,
-                                                  height: 15,
-                                                ),
-                                                title: Text(
-                                                    getTranslated(
-                                                        e.title, context),
-                                                    style:
-                                                        poppinsRegular.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: Dimensions
-                                                          .fontSizeLarge,
-                                                      color: Provider.of<
-                                                                      ThemeProvider>(
-                                                                  context)
-                                                              .darkTheme
-                                                          ? Theme.of(context)
-                                                              .textTheme
-                                                              .bodyLarge
-                                                              ?.color
-                                                              ?.withOpacity(
-                                                                  _drawerOpacity)
-                                                          : ResponsiveHelper
-                                                                  .isDesktop(
-                                                                      context)
-                                                              ? ColorResources
-                                                                  .getDarkColor(
-                                                                      context)
-                                                              : Theme.of(
-                                                                      context)
-                                                                  .hintColor,
-                                                    )),
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                          ],
-                                        ))
-                                    .toList()),
-                          ListTile(
-                            onTap: () {
-                              if (isLoggedIn) {
-                                showDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (context) =>
-                                        const SignOutDialogWidget());
-                              } else {
-                                splashProvider.setPageIndex(0);
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    RouteHelper.getLoginRoute(),
-                                    (route) => false);
-                              }
-                            },
-                            leading: CustomAssetImageWidget(
-                              isLoggedIn ? Images.logOut : Images.logIn,
-                              width: 25,
-                              height: 25,
-                              color: Colors.white,
-                            ),
-                            title: Text(
-                              getTranslated(
-                                  isLoggedIn ? 'log_out' : 'login', context),
-                              style: poppinsRegular.copyWith(
-                                fontSize: Dimensions.fontSizeLarge,
-                                color: Provider.of<ThemeProvider>(context)
-                                        .darkTheme
-                                    ? Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.color
-                                        ?.withOpacity(_drawerOpacity)
-                                    : ResponsiveHelper.isDesktop(context)
-                                        ? ColorResources.getDarkColor(context)
-                                        : Theme.of(context).canvasColor,
+                                  //   IconButton(
+                                  //     icon: Icon(Icons.notifications,
+                                  //         color: Provider.of<ThemeProvider>(context)
+                                  //                 .darkTheme
+                                  //             ? Theme.of(context)
+                                  //                 .textTheme
+                                  //                 .bodyLarge
+                                  //                 ?.color
+                                  //                 ?.withOpacity(_drawerOpacity)
+                                  //             : ResponsiveHelper.isDesktop(context)
+                                  //                 ? ColorResources.getDarkColor(
+                                  //                     context)
+                                  //                 : Theme.of(context).canvasColor),
+                                  //     onPressed: () {
+                                  //       Navigator.pushNamed(
+                                  //           context, RouteHelper.notification,
+                                  //           arguments: const NotificationScreen());
+                                  //     },
+                                  //   ),
+                                ],
                               ),
                             ),
-                          ),
-                        ]);
-                      },
+                            // const SizedBox(height: 50),
+                            if (!ResponsiveHelper.isDesktop(context))
+                              Column(
+                                  children: menuSections.indexed
+                                      .map((menuCategories) => Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(height: 10),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 16.0),
+                                                child: Text(
+                                                    menuCategories.$2.title),
+                                              ),
+                                              ...menuCategories.$2.screens.map(
+                                                (e) => ListTile(
+                                                  minTileHeight: 20,
+                                                  onTap: () {
+                                                    if (!ResponsiveHelper
+                                                        .isDesktop(context)) {
+                                                      splash
+                                                          .setScreensCategoryIndex(
+                                                              menuCategories
+                                                                  .$1);
+                                                      splash.setPageIndex(
+                                                          menuSections[
+                                                                  menuCategories
+                                                                      .$1]
+                                                              .screens
+                                                              .indexOf(e));
+                                                    }
+                                                    Navigator.of(context).pop();
+                                                    // drawerController!.toggle();
+                                                  },
+                                                  selected: splash.pageIndex ==
+                                                      menuSections[splash
+                                                              .screenCategoryIndex]
+                                                          .screens
+                                                          .indexOf(e),
+                                                  selectedTileColor: Colors
+                                                      .black
+                                                      .withAlpha(30),
+                                                  leading:
+                                                      CustomAssetImageWidget(
+                                                    e.icon,
+                                                    color: ResponsiveHelper
+                                                            .isDesktop(context)
+                                                        ? ColorResources
+                                                            .getDarkColor(
+                                                                context)
+                                                        : Provider.of<ThemeProvider>(
+                                                                    context)
+                                                                .darkTheme
+                                                            ? Colors.white
+                                                            : Theme.of(context)
+                                                                .primaryColor,
+                                                    width: 15,
+                                                    height: 15,
+                                                  ),
+                                                  title: Text(
+                                                      getTranslated(
+                                                          e.title, context),
+                                                      style: poppinsRegular
+                                                          .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: Dimensions
+                                                            .fontSizeLarge,
+                                                        color: Provider.of<
+                                                                        ThemeProvider>(
+                                                                    context)
+                                                                .darkTheme
+                                                            ? Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .bodyLarge
+                                                                ?.color
+                                                                ?.withOpacity(
+                                                                    _drawerOpacity)
+                                                            : ResponsiveHelper
+                                                                    .isDesktop(
+                                                                        context)
+                                                                ? ColorResources
+                                                                    .getDarkColor(
+                                                                        context)
+                                                                : Theme.of(
+                                                                        context)
+                                                                    .hintColor,
+                                                      )),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 10),
+                                            ],
+                                          ))
+                                      .toList()),
+                            ListTile(
+                              onTap: () {
+                                if (isLoggedIn) {
+                                  showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) =>
+                                          const SignOutDialogWidget());
+                                } else {
+                                  splashProvider.setPageIndex(0);
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      RouteHelper.getLoginRoute(),
+                                      (route) => false);
+                                }
+                              },
+                              leading: CustomAssetImageWidget(
+                                isLoggedIn ? Images.logOut : Images.logIn,
+                                width: 25,
+                                height: 25,
+                                color: Colors.white,
+                              ),
+                              title: Text(
+                                getTranslated(
+                                    isLoggedIn ? 'log_out' : 'login', context),
+                                style: poppinsRegular.copyWith(
+                                  fontSize: Dimensions.fontSizeLarge,
+                                  color: Provider.of<ThemeProvider>(context)
+                                          .darkTheme
+                                      ? Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.color
+                                          ?.withOpacity(_drawerOpacity)
+                                      : ResponsiveHelper.isDesktop(context)
+                                          ? ColorResources.getDarkColor(context)
+                                          : Theme.of(context).canvasColor,
+                                ),
+                              ),
+                            ),
+                          ]);
+                        },
+                      ),
                     ),
                   ),
-                ),
+          ),
         ),
       ),
     );

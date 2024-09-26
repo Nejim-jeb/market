@@ -255,7 +255,8 @@ class _MainScreenState extends State<MainScreen> {
                           centerTitle: true,
                           title: splash.pageIndex == 0
                               ? Image.asset(
-                                  Images.appLogoNoBg,
+                                  Images.appLogo,
+                                  height: 200,
                                 )
                               // Row(children: [
                               //     Image.asset(Images.appLogo, width: 25),

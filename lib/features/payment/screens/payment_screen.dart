@@ -1,18 +1,18 @@
-
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/common/models/place_order_model.dart';
-import 'package:flutter_grocery/helper/route_helper.dart';
 import 'package:flutter_grocery/common/providers/cart_provider.dart';
-import 'package:flutter_grocery/features/order/providers/order_provider.dart';
-import 'package:flutter_grocery/utill/app_constants.dart';
 import 'package:flutter_grocery/common/widgets/custom_loader_widget.dart';
-import 'package:flutter_grocery/helper/custom_snackbar_helper.dart';
+import 'package:flutter_grocery/features/order/providers/order_provider.dart';
 import 'package:flutter_grocery/features/payment/widgets/cancel_dialog_widget.dart';
+import 'package:flutter_grocery/helper/custom_snackbar_helper.dart';
+import 'package:flutter_grocery/helper/route_helper.dart';
+import 'package:flutter_grocery/utill/app_constants.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
 
@@ -44,12 +44,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
     if (Platform.isAndroid) {
       await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
 
-      bool swAvailable = await AndroidWebViewFeature.isFeatureSupported(AndroidWebViewFeature.SERVICE_WORKER_BASIC_USAGE);
-      bool swInterceptAvailable = await AndroidWebViewFeature.isFeatureSupported(AndroidWebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST);
+      bool swAvailable = await AndroidWebViewFeature.isFeatureSupported(
+          AndroidWebViewFeature.SERVICE_WORKER_BASIC_USAGE);
+      bool swInterceptAvailable =
+          await AndroidWebViewFeature.isFeatureSupported(
+              AndroidWebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST);
 
       if (swAvailable && swInterceptAvailable) {
-        AndroidServiceWorkerController serviceWorkerController = AndroidServiceWorkerController.instance();
-        await serviceWorkerController.setServiceWorkerClient(AndroidServiceWorkerClient(
+        AndroidServiceWorkerController serviceWorkerController =
+            AndroidServiceWorkerController.instance();
+        await serviceWorkerController
+            .setServiceWorkerClient(AndroidServiceWorkerClient(
           shouldInterceptRequest: (request) async {
             return null;
           },
@@ -57,25 +62,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
       }
     }
 
-    pullToRefreshController = PullToRefreshController(
-      options: PullToRefreshOptions(
-        color: Colors.black,
-      ),
-      onRefresh: () async {
-        if (Platform.isAndroid) {
-          browser.webViewController?.reload();
-        } else if (Platform.isIOS) {
-          browser.webViewController?.loadUrl(urlRequest: URLRequest(url: await browser.webViewController.getUrl()));
-        }
-      },
-    );
-    browser.pullToRefreshController = pullToRefreshController;
+    // pullToRefreshController = PullToRefreshController(
+    //   options: PullToRefreshOptions(
+    //     color: Colors.black,
+    //   ),
+    //   onRefresh: () async {
+    //     if (Platform.isAndroid) {
+    //       browser.webViewController?.reload();
+    //     } else if (Platform.isIOS) {
+    //       browser.webViewController?.loadUrl(urlRequest: URLRequest(url: await browser.webViewController?.getUrl()));
+    //     }
+    //   },
+    // );
+    // browser.pullToRefreshController = pullToRefreshController;
 
     await browser.openUrlRequest(
-      urlRequest: URLRequest(url: Uri.parse(selectedUrl)),
+      urlRequest: URLRequest(url: WebUri(selectedUrl)),
       options: InAppBrowserClassOptions(
         inAppWebViewGroupOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(useShouldOverrideUrlLoading: true, useOnLoadResource: true),
+          crossPlatform: InAppWebViewOptions(
+              useShouldOverrideUrlLoading: true, useOnLoadResource: true),
         ),
       ),
     );
@@ -89,9 +95,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
         body: Center(
           child: Stack(
             children: [
-              _isLoading ? Center(
-                child: CustomLoaderWidget(color: Theme.of(context).primaryColor),
-              ) : const SizedBox.shrink(),
+              _isLoading
+                  ? Center(
+                      child: CustomLoaderWidget(
+                          color: Theme.of(context).primaryColor),
+                    )
+                  : const SizedBox.shrink(),
             ],
           ),
         ),
@@ -100,22 +109,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   Future<bool?> _exitApp(BuildContext context) async {
-    return showDialog(context: context,
+    return showDialog(
+        context: context,
         builder: (context) => CancelDialogWidget(orderID: widget.orderId));
   }
 }
-
 
 class MyInAppBrowser extends InAppBrowser {
   final int? orderId;
   final bool? fromCheckout;
   final BuildContext context;
-  MyInAppBrowser(this.context, {
-    required this.orderId,
-    int? windowId,
-    UnmodifiableListView<UserScript>? initialUserScripts,
-    this.fromCheckout
-  })
+  MyInAppBrowser(this.context,
+      {required this.orderId,
+      int? windowId,
+      UnmodifiableListView<UserScript>? initialUserScripts,
+      this.fromCheckout})
       : super(windowId: windowId, initialUserScripts: initialUserScripts);
 
   bool _canRedirect = true;
@@ -128,7 +136,9 @@ class MyInAppBrowser extends InAppBrowser {
   }
 
   @override
-  Future onLoadStart(url, ) async {
+  Future onLoadStart(
+    url,
+  ) async {
     if (kDebugMode) {
       print("\n\nStarted: $url\n\n");
     }
@@ -164,8 +174,9 @@ class MyInAppBrowser extends InAppBrowser {
 
   @override
   void onExit() {
-    if(_canRedirect) {
-      Navigator.pushReplacementNamed(context, '${RouteHelper.orderSuccessful}/$orderId/payment-fail');
+    if (_canRedirect) {
+      Navigator.pushReplacementNamed(
+          context, '${RouteHelper.orderSuccessful}/$orderId/payment-fail');
     }
 
     if (kDebugMode) {
@@ -174,7 +185,8 @@ class MyInAppBrowser extends InAppBrowser {
   }
 
   @override
-  Future<NavigationActionPolicy> shouldOverrideUrlLoading(navigationAction) async {
+  Future<NavigationActionPolicy> shouldOverrideUrlLoading(
+      navigationAction) async {
     if (kDebugMode) {
       print("\n\nOverride ${navigationAction.request.url}\n\n");
     }
@@ -198,70 +210,87 @@ class MyInAppBrowser extends InAppBrowser {
   }
 
   void _pageRedirect(String url) {
-    if(_canRedirect) {
-      bool checkedUrl = (url.contains('${AppConstants.baseUrl}${RouteHelper.orderSuccessful}') || url.contains('${AppConstants.baseUrl}${RouteHelper.wallet}'));
+    if (_canRedirect) {
+      bool checkedUrl = (url.contains(
+              '${AppConstants.baseUrl}${RouteHelper.orderSuccessful}') ||
+          url.contains('${AppConstants.baseUrl}${RouteHelper.wallet}'));
       bool isSuccess = url.contains('success') && checkedUrl;
       bool isFailed = url.contains('fail') && checkedUrl;
       bool isCancel = url.contains('cancel') && checkedUrl;
 
-      bool isWallet = url.contains('${AppConstants.baseUrl}${RouteHelper.wallet}');
+      bool isWallet =
+          url.contains('${AppConstants.baseUrl}${RouteHelper.wallet}');
 
       if (kDebugMode) {
-        print('----------------payment status -----$isCancel -- $isSuccess -- $isFailed');
+        print(
+            '----------------payment status -----$isCancel -- $isSuccess -- $isFailed');
         print('------------------url --- $url');
       }
 
-      if(isSuccess || isFailed || isCancel) {
+      if (isSuccess || isFailed || isCancel) {
         _canRedirect = false;
         close();
       }
-      if(isSuccess){
-        String token = url.replaceRange(0, url.indexOf('token='), '').replaceAll('token=', '');
-        if(isWallet){
-          Navigator.pushReplacementNamed(context, RouteHelper.getWalletRoute(token: token, status: 'success'));
-        }else{
-          if(token.isNotEmpty) {
-            final orderProvider =  Provider.of<OrderProvider>(context, listen: false);
-            String placeOrderString =  utf8.decode(base64Url.decode(orderProvider.getPlaceOrder()!.replaceAll(' ', '+')));
+      if (isSuccess) {
+        String token = url
+            .replaceRange(0, url.indexOf('token='), '')
+            .replaceAll('token=', '');
+        if (isWallet) {
+          Navigator.pushReplacementNamed(context,
+              RouteHelper.getWalletRoute(token: token, status: 'success'));
+        } else {
+          if (token.isNotEmpty) {
+            final orderProvider =
+                Provider.of<OrderProvider>(context, listen: false);
+            String placeOrderString = utf8.decode(base64Url
+                .decode(orderProvider.getPlaceOrder()!.replaceAll(' ', '+')));
 
-            String decodeValue = utf8.decode(base64Url.decode(token.replaceAll(' ', '+')));
-            String paymentMethod = decodeValue.substring(0, decodeValue.indexOf('&&'));
-            String transactionReference = decodeValue.substring(decodeValue.indexOf('&&') + '&&'.length, decodeValue.length);
+            String decodeValue =
+                utf8.decode(base64Url.decode(token.replaceAll(' ', '+')));
+            String paymentMethod =
+                decodeValue.substring(0, decodeValue.indexOf('&&'));
+            String transactionReference = decodeValue.substring(
+                decodeValue.indexOf('&&') + '&&'.length, decodeValue.length);
 
-
-
-            PlaceOrderModel? placeOrderBody =  PlaceOrderModel.fromJson(jsonDecode(placeOrderString)).copyWith(
+            PlaceOrderModel? placeOrderBody =
+                PlaceOrderModel.fromJson(jsonDecode(placeOrderString)).copyWith(
               paymentMethod: paymentMethod.replaceAll('payment_method=', ''),
-              transactionReference:  transactionReference.replaceRange(0, transactionReference.indexOf('transaction_reference='), '').replaceAll('transaction_reference=', ''),
+              transactionReference: transactionReference
+                  .replaceRange(
+                      0,
+                      transactionReference.indexOf('transaction_reference='),
+                      '')
+                  .replaceAll('transaction_reference=', ''),
             );
 
-            Provider.of<OrderProvider>(context, listen: false).placeOrder(placeOrderBody, _callback);
-
-          }else{
-            Navigator.pushReplacementNamed(context, '${RouteHelper.orderSuccessful}/$orderId/payment-fail');
+            Provider.of<OrderProvider>(context, listen: false)
+                .placeOrder(placeOrderBody, _callback);
+          } else {
+            Navigator.pushReplacementNamed(context,
+                '${RouteHelper.orderSuccessful}/$orderId/payment-fail');
           }
         }
-
-      }else if(isWallet){
-        Navigator.pushReplacementNamed(context, RouteHelper.getWalletRoute(token: 'failed',status: 'failed'));
-
-      }else if(isFailed) {
-        Navigator.pushReplacementNamed(context, '${RouteHelper.orderSuccessful}/${'No'}/payment-fail');
-      }else if(isCancel) {
-        Navigator.pushReplacementNamed(context, '${RouteHelper.orderSuccessful}/${'No'}/payment-cancel');
+      } else if (isWallet) {
+        Navigator.pushReplacementNamed(context,
+            RouteHelper.getWalletRoute(token: 'failed', status: 'failed'));
+      } else if (isFailed) {
+        Navigator.pushReplacementNamed(
+            context, '${RouteHelper.orderSuccessful}/${'No'}/payment-fail');
+      } else if (isCancel) {
+        Navigator.pushReplacementNamed(
+            context, '${RouteHelper.orderSuccessful}/${'No'}/payment-cancel');
       }
     }
-
   }
 
   void _callback(bool isSuccess, String message, String orderID) async {
     Provider.of<CartProvider>(context, listen: false).clearCartList();
     Provider.of<OrderProvider>(context, listen: false).stopLoader();
-    if(isSuccess) {
-      Navigator.pushReplacementNamed(context, '${RouteHelper.orderSuccessful}/$orderID/success');
-    }else {
+    if (isSuccess) {
+      Navigator.pushReplacementNamed(
+          context, '${RouteHelper.orderSuccessful}/$orderID/success');
+    } else {
       showCustomSnackBarHelper(message);
     }
   }
-
 }

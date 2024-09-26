@@ -72,7 +72,7 @@ class _WebAppBarWidgetState extends State<WebAppBarWidget> {
       child: Column(
         children: [
           Container(
-            color: Theme.of(context).secondaryHeaderColor,
+            color: Theme.of(context).colorScheme.primary,
             height: 40,
             child: Center(
               child: SizedBox(
@@ -88,8 +88,7 @@ class _WebAppBarWidgetState extends State<WebAppBarWidget> {
                             horizontal: Dimensions.paddingSizeExtraSmall),
                         child: Text('dark_mode'.tr,
                             style: poppinsMedium.copyWith(
-                              color:
-                                  Theme.of(context).textTheme.bodyLarge?.color,
+                              color: Theme.of(context).colorScheme.onPrimary,
                               fontSize: Dimensions.paddingSizeDefault,
                             )),
                       ),
@@ -97,11 +96,14 @@ class _WebAppBarWidgetState extends State<WebAppBarWidget> {
                       Transform.scale(
                         scale: 0.6,
                         child: Switch(
+                          trackOutlineColor: WidgetStatePropertyAll(
+                              Theme.of(context).colorScheme.onPrimary),
                           onChanged: (bool isActive) =>
                               themeProvider.toggleTheme(),
                           value: themeProvider.darkTheme,
                           activeTrackColor: Theme.of(context).primaryColor,
-                          inactiveThumbColor: Colors.white,
+                          inactiveThumbColor:
+                              Theme.of(context).colorScheme.onPrimary,
                           activeColor: Colors.white,
                           inactiveTrackColor: Theme.of(context).primaryColor,
                         ),
@@ -125,16 +127,13 @@ class _WebAppBarWidgetState extends State<WebAppBarWidget> {
                                     '${currentLanguage.languageCode?.toUpperCase()}',
                                     style: poppinsMedium.copyWith(
                                         color: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge
-                                            ?.color)),
+                                            .colorScheme
+                                            .onPrimary)),
                                 const SizedBox(
                                     width: Dimensions.paddingSizeExtraSmall),
                                 Icon(Icons.expand_more,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.color)
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary)
                               ],
                             ),
                           ),

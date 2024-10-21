@@ -116,7 +116,7 @@ class BottomAppBarItem extends StatelessWidget {
     final isSelected = selectedIndex == childNumber;
     const selectedColor = Colors.white70;
     const unselectedColor = Colors.white;
-    final iconSize = isSelected ? 20.0 : 18.0;
+    final iconSize = isSelected ? 25.0 : 24.0;
     final iconColor = !isSelected ? selectedColor : unselectedColor;
     return InkWell(
       onTap: isSelected ? null : onPressed,

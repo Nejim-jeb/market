@@ -22,6 +22,7 @@ import 'package:flutter_grocery/features/coupon/screens/coupon_screen.dart';
 import 'package:flutter_grocery/features/home/screens/home_item_screen.dart';
 import 'package:flutter_grocery/features/html/screens/html_viewer_screen.dart';
 import 'package:flutter_grocery/features/maintainance/screens/maintainance_screen.dart';
+import 'package:flutter_grocery/features/menu/screens/main_screen.dart';
 import 'package:flutter_grocery/features/menu/screens/menu_screen.dart';
 import 'package:flutter_grocery/features/menu/screens/setting_screen.dart';
 import 'package:flutter_grocery/features/not_found/screens/not_found_screen.dart';
@@ -225,7 +226,8 @@ class RouteHelper {
   static final Handler _menuHandler = Handler(
       handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
     bool? isLoad = ModalRoute.of(context!)?.settings.arguments as bool?;
-    return _routeHandler(child: MenuScreen(isReload: isLoad ?? true));
+    return _routeHandler(child: MainScreen(isReload: isLoad ?? true));
+    // return _routeHandler(child: MenuScreen(isReload: isLoad ?? true));
   });
 
   static final Handler _loginHandler = Handler(

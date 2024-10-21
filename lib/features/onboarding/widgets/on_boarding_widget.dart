@@ -5,17 +5,21 @@ import 'package:flutter_grocery/utill/styles.dart';
 
 class OnBoardingWidget extends StatelessWidget {
   final OnBoardingModel onBoardingModel;
-  const OnBoardingWidget({Key? key, required this.onBoardingModel}) : super(key: key);
+  const OnBoardingWidget({Key? key, required this.onBoardingModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-
-      Expanded(flex: 7, child: Padding(
-        padding: const EdgeInsets.all(Dimensions.paddingSizeExtraLarge),
-        child: Image.asset(onBoardingModel.imageUrl),
-      )),
-
+      Expanded(
+          flex: 7,
+          child: Padding(
+            padding: const EdgeInsets.all(Dimensions.paddingSizeExtraLarge),
+            child: Image.asset(
+              onBoardingModel.imageUrl,
+              // color: Theme.of(context).colorScheme.primary,
+            ),
+          )),
       Expanded(
         flex: 1,
         child: Text(
@@ -27,7 +31,6 @@ class OnBoardingWidget extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       ),
-
       Expanded(
         flex: 2,
         child: Text(
@@ -38,7 +41,6 @@ class OnBoardingWidget extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       )
-
     ]);
   }
 }

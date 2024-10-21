@@ -11,7 +11,6 @@ import 'package:flutter_grocery/features/cart/screens/cart_screen.dart';
 import 'package:flutter_grocery/features/coupon/screens/coupon_screen.dart';
 import 'package:flutter_grocery/features/home/screens/home_screens.dart';
 import 'package:flutter_grocery/features/html/screens/html_viewer_screen.dart';
-import 'package:flutter_grocery/features/menu/domain/models/custom_drawer_controller_model.dart';
 import 'package:flutter_grocery/features/menu/domain/models/main_screen_model.dart';
 import 'package:flutter_grocery/features/menu/screens/menu_screen.dart';
 import 'package:flutter_grocery/features/menu/screens/setting_screen.dart';
@@ -31,9 +30,12 @@ import 'package:flutter_grocery/main.dart';
 import 'package:flutter_grocery/utill/dimensions.dart';
 import 'package:flutter_grocery/utill/images.dart';
 import 'package:flutter_grocery/utill/styles.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 final drawerKey = GlobalKey<ScaffoldState>();
+
+const double _iconSize = 25.0;
 
 List<MenuScreensSection> menuSections = [
   MenuScreensSection(
@@ -61,8 +63,8 @@ List<MenuScreensSection> menuSections = [
     screens: [
       MainScreenModel(const AddressListScreen(canPop: false), 'my_address',
           Images.homeAddressSolid),
-      MainScreenModel(const CartScreen(canPop: false), 'track_order',
-          Images.orderTrackSolid),
+      MainScreenModel(
+          const CartScreen(canPop: false), 'shopping_bag', Images.orderBag),
       MainScreenModel(
           const CouponScreen(canPop: false), 'coupon', Images.couponSolid),
       MainScreenModel(
@@ -158,10 +160,12 @@ List<MenuScreensSection> menuSections = [
 
 class MainScreen extends StatefulWidget {
   final bool isReload;
-  final CustomDrawerController drawerController;
-  const MainScreen(
-      {Key? key, required this.drawerController, this.isReload = true})
-      : super(key: key);
+  // final CustomDrawerController drawerController;
+  const MainScreen({
+    Key? key,
+    // required this.drawerController,
+    this.isReload = true,
+  }) : super(key: key);
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -206,9 +210,7 @@ class _MainScreenState extends State<MainScreen> {
                 child: Scaffold(
                   key: drawerKey,
                   drawer: Drawer(
-                    child: MenuWidget(
-                      scaffoldKey: drawerKey,
-                    ),
+                    child: MenuWidget(),
                   ),
                   floatingActionButton: !ResponsiveHelper.isDesktop(context)
                       ? Padding(
@@ -227,12 +229,13 @@ class _MainScreenState extends State<MainScreen> {
                           leading: Row(
                             children: [
                               IconButton(
-                                  icon: Image.asset(Images.moreIcon,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary,
-                                      height: 30,
-                                      width: 30),
+                                  icon: SvgPicture.asset(
+                                    Images.dashboardSolid,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                    height: _iconSize - 3,
+                                    width: _iconSize - 3,
+                                  ),
                                   onPressed: () {
                                     drawerKey.currentState!.openDrawer();
                                     // widget.drawerController.toggle();
@@ -242,8 +245,8 @@ class _MainScreenState extends State<MainScreen> {
                                   Images.search,
                                   color:
                                       Theme.of(context).colorScheme.onPrimary,
-                                  width: 30,
-                                  height: 30,
+                                  width: _iconSize,
+                                  height: _iconSize,
                                 ),
                                 onPressed: () {
                                   Navigator.pushNamed(
@@ -255,8 +258,9 @@ class _MainScreenState extends State<MainScreen> {
                           centerTitle: true,
                           title: splash.pageIndex == 0
                               ? Image.asset(
-                                  Images.appLogo,
-                                  height: 200,
+                                  Images.appLogoWhite,
+                                  height: 100,
+                                  width: 100,
                                 )
                               // Row(children: [
                               //     Image.asset(Images.appLogo, width: 25),
@@ -297,7 +301,7 @@ class _MainScreenState extends State<MainScreen> {
                                         color: Theme.of(context)
                                             .colorScheme
                                             .onPrimary,
-                                        size: 30),
+                                        size: _iconSize),
                                   ),
                                   IconButton(
                                       icon: Stack(
@@ -309,7 +313,7 @@ class _MainScreenState extends State<MainScreen> {
                                                     .onPrimary
                                                     .withOpacity(
                                                         isDarkTheme ? 0.9 : 1),
-                                                size: 30),
+                                                size: _iconSize),
                                             Positioned(
                                               top: -7,
                                               right: -2,
@@ -331,7 +335,14 @@ class _MainScreenState extends State<MainScreen> {
                                             ),
                                           ]),
                                       onPressed: () {
-                                        splash.setPageIndex(2);
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             CartScreen()));
+                                        splash
+                                          ..setPageIndex(1)
+                                          ..setScreensCategoryIndex(1);
                                       }),
                                 ]
                               : splash.pageIndex == 99

@@ -210,6 +210,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
                                       ],
                                     )
                                   : NoDataWidget(
+                                      isFooter: false,
                                       title: getTranslated(
                                           'no_address_found', context)),
                         ],

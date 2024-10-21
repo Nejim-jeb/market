@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/common/providers/cart_provider.dart';
-import 'package:flutter_grocery/features/menu/screens/menu_screen.dart';
+import 'package:flutter_grocery/features/menu/screens/main_screen.dart';
 import 'package:flutter_grocery/features/splash/providers/splash_provider.dart';
 import 'package:flutter_grocery/utill/dimensions.dart';
 import 'package:flutter_grocery/utill/styles.dart';
@@ -92,7 +92,8 @@ class DetailsAppBarWidgetState extends State<DetailsAppBarWidget>
                   Provider.of<SplashProvider>(context, listen: false)
                       .setPageIndex(2);
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => const MenuScreen()));
+                      // MaterialPageRoute(builder: (_) => const MenuScreen()));
+                      MaterialPageRoute(builder: (_) => const MainScreen()));
                 },
               ),
             );

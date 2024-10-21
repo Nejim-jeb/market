@@ -9,7 +9,7 @@ import 'package:flutter_grocery/common/widgets/no_data_widget.dart';
 import 'package:flutter_grocery/common/widgets/not_login_widget.dart';
 import 'package:flutter_grocery/common/widgets/web_app_bar_widget.dart';
 import 'package:flutter_grocery/features/auth/providers/auth_provider.dart';
-import 'package:flutter_grocery/features/menu/screens/menu_screen.dart';
+import 'package:flutter_grocery/features/menu/screens/main_screen.dart';
 import 'package:flutter_grocery/features/profile/providers/profile_provider.dart';
 import 'package:flutter_grocery/features/splash/providers/splash_provider.dart';
 import 'package:flutter_grocery/features/wallet_and_loyalty/providers/wallet_provider.dart';
@@ -112,7 +112,8 @@ class _WalletScreenState extends State<WalletScreen> {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (_) => const MenuScreen(),
+                builder: (_) => const MainScreen(),
+                // builder: (_) => const MenuScreen(),
               ),
               (route) => false);
           return false;

@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/common/providers/cart_provider.dart';
-import 'package:flutter_grocery/common/providers/localization_provider.dart';
 import 'package:flutter_grocery/common/providers/theme_provider.dart';
 import 'package:flutter_grocery/common/widgets/custom_asset_image_widget.dart';
 import 'package:flutter_grocery/common/widgets/custom_image_widget.dart';
 import 'package:flutter_grocery/common/widgets/web_app_bar_widget.dart';
-import 'package:flutter_grocery/features/address/providers/location_provider.dart';
 import 'package:flutter_grocery/features/auth/providers/auth_provider.dart';
 import 'package:flutter_grocery/features/menu/domain/models/custom_drawer_controller_model.dart';
 import 'package:flutter_grocery/features/menu/screens/main_screen.dart';
-import 'package:flutter_grocery/features/menu/widgets/custom_drawer_widget.dart';
 import 'package:flutter_grocery/features/menu/widgets/menu_list_web_widget.dart';
 import 'package:flutter_grocery/features/menu/widgets/sign_out_dialog_widget.dart';
 import 'package:flutter_grocery/features/profile/providers/profile_provider.dart';
@@ -26,56 +22,56 @@ import 'package:provider/provider.dart';
 
 const double _drawerOpacity = 1;
 
-class MenuScreen extends StatefulWidget {
-  final bool isReload;
-  const MenuScreen({Key? key, this.isReload = true}) : super(key: key);
+// class MenuScreen extends StatefulWidget {
+//   final bool isReload;
+//   const MenuScreen({Key? key, this.isReload = true}) : super(key: key);
 
-  @override
-  State<MenuScreen> createState() => _MenuScreenState();
-}
+//   @override
+//   State<MenuScreen> createState() => _MenuScreenState();
+// }
 
-class _MenuScreenState extends State<MenuScreen> {
-  final CustomDrawerController _drawerController = CustomDrawerController();
+// class _MenuScreenState extends State<MenuScreen> {
+//   final CustomDrawerController _drawerController = CustomDrawerController();
 
-  @override
-  void initState() {
-    super.initState();
-    final bool isLoggedIn =
-        Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
-    if (isLoggedIn && widget.isReload) {
-      Provider.of<ProfileProvider>(context, listen: false).getUserInfo();
-      Provider.of<LocationProvider>(context, listen: false).initAddressList();
-    } else {
-      Provider.of<CartProvider>(context, listen: false).getCartData();
-    }
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     final bool isLoggedIn =
+//         Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
+//     if (isLoggedIn && widget.isReload) {
+//       Provider.of<ProfileProvider>(context, listen: false).getUserInfo();
+//       Provider.of<LocationProvider>(context, listen: false).initAddressList();
+//     } else {
+//       Provider.of<CartProvider>(context, listen: false).getCartData();
+//     }
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    final LocalizationProvider localizationProvider =
-        Provider.of<LocalizationProvider>(context, listen: false);
+//   @override
+//   Widget build(BuildContext context) {
+//     final LocalizationProvider localizationProvider =
+//         Provider.of<LocalizationProvider>(context, listen: false);
 
-    return CustomDrawerWidget(
-      controller: _drawerController,
-      menuScreen: MenuWidget(drawerController: _drawerController),
-      mainScreen: MainScreen(
-          drawerController: _drawerController, isReload: widget.isReload),
-      showShadow: false,
-      angle: 0.0,
-      borderRadius: 30,
-      slideWidth: MediaQuery.of(context).size.width *
-          (localizationProvider.isLtr ? 0.6 : 0.1),
-    );
-  }
-}
+//     return CustomDrawerWidget(
+//       controller: _drawerController,
+//       menuScreen: MenuWidget(drawerController: _drawerController),
+//       mainScreen: MainScreen(
+//           drawerController: _drawerController, isReload: widget.isReload),
+//       showShadow: false,
+//       angle: 0.0,
+//       borderRadius: 30,
+//       slideWidth: MediaQuery.of(context).size.width *
+//           (localizationProvider.isLtr ? 0.6 : 0.1),
+//     );
+//   }
+// }
 
 class MenuWidget extends StatelessWidget {
   final CustomDrawerController? drawerController;
-  final GlobalKey<ScaffoldState>? scaffoldKey;
+  // final GlobalKey<ScaffoldState>? scaffoldKey;
   const MenuWidget({
     Key? key,
     this.drawerController,
-    this.scaffoldKey,
+    // this.scaffoldKey,
   }) : super(key: key);
 
   @override

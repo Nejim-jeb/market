@@ -62,8 +62,8 @@ class FooterWebWidget extends StatelessWidget {
                                         Consumer<SplashProvider>(
                                           builder: (context, splash, child) =>
                                               CustomImageWidget(
-                                            image: Images.appWhiteLogo,
-                                            placeholder: Images.appWhiteLogo,
+                                            image: Images.appLogoWhite,
+                                            placeholder: Images.appLogoWhite,
                                             width: 150,
                                           ),
                                         ),
